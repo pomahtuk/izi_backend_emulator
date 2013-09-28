@@ -1,0 +1,12 @@
+#pad-wrapper.users-list.new-user 
+  .form-wrapper
+    h3 Действительно удалить фирму? Связанные заказы будут удалены!
+    br
+    p {{firm.title}}
+    p {{firm.adress}}
+    p {{firm.info}}
+    p {{firm.phone}}
+    .span11.field-box.actions
+      button.btn-flat.danger(ng-click='deleteFirm()') Удалить
+      <span></span>
+      button.btn-flat.white(ng-click='home()') Отмена

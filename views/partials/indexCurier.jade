@@ -1,0 +1,33 @@
+#pad-wrapper.users-list
+  .row-fluid.header
+    h3 Курьеры
+    .span10.pull-right
+      input.span5.search(type='text', placeholder='Найти...', ng-model="search")
+      a.btn-flat.success.pull-right(href='/curier/add/')
+        span 
+        | + Добавить курьера
+  .row-fluid.table.table-products
+    table.table.table-hover
+      thead
+        tr
+          th.span3.sortable
+            a(href='/curier/', ng-click="predicate = 'name'; reverse=!reverse")  Фамилия Имя
+          th.span3.sortable
+            a(href='/curier/', ng-click="predicate = 'phone'; reverse=!reverse")  Телефон
+          th.span1
+            span.line
+            | Действия
+      tbody
+        tr(ng-repeat='curier in curiers | filter:search | orderBy:predicate:reverse')
+          td
+            a.name(href='/curier/view/{{curier._id}}') {{curier.name}}
+          td
+            {{curier.phone}}
+          td
+            ul.actions
+              li
+                a(href='/curier/edit/{{curier._id}}')
+                  i.table-edit
+              li.last
+                a(href='/curier/delete/{{curier._id}}')
+                  i.table-delete

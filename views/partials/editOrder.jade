@@ -1,0 +1,48 @@
+#pad-wrapper.new-user
+  .row-fluid.header
+    h3
+      span(ng-show="order.edit")
+        | Редактировать заказ
+      span(ng-hide="order.edit")
+        | Создать заказ
+  .row-fluid.form-wrapper
+    .span12
+      .container
+        form.new_user_form.inline-input
+          .span12.field-box
+            label Дата:
+            datepicker(ng-model="order.date", show-weeks="false", starting-day="1")
+          .span12.field-box
+            label Время:
+            timepicker(ng-model="order.date", show-meridian="false")
+          .span12.field-box
+            label Фирма:
+            select.span9(ui-select2="select2Options", ng-model="order.firm")
+              option(ng-repeat="firm in firms", value="{{firm._id}}") {{firm.title}}
+          .span12.field-box
+            label Адрес доставки:
+            input.span9(type='text', ng-model='order.delivery_adress')
+          .span12.field-box
+            label Сумма заказа:
+            input.span9(type='text', ng-model='order.order_summ')
+          .span12.field-box
+            label Доставка:
+            input.span9(type='text', ng-model='order.delivery_cost')
+          .span12.field-box
+            label Курьер:
+            select.span9(ui-select2="select2Options", ng-model="order.curier")
+              option(ng-repeat="curier in curiers", value="{{curier._id}}") {{curier.name}}
+          .span12.field-box
+            label Комментарий:
+            textarea.span9(ng-model='order.comment')
+          .span12.field-box
+            label.checkbox
+              | За город
+              input(type="checkbox", ng-model='order.outside')
+          .span12.field-box(ng-show='order.outside')
+            label Оплата курьеру:
+            input.span9(type='text', ng-model='order.curier_income')
+          .span11.field-box.actions
+            input.btn-glow.primary(type='button', value='Сохранить', ng-click='editOrder()')
+            span или
+            input.reset(type='reset', value='Отменить')

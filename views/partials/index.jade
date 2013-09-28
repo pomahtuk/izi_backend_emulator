@@ -1,0 +1,86 @@
+#main-stats
+    .row-fluid.stats-row
+        .span3.stat
+          .data
+            span.number {{week_delivery}}
+            | Доставок
+          span.date на этой неделе
+        .span3.stat
+          .data
+            span.number {{week_income | add_space_in_price}}
+            | Выручка
+          span.date на этой неделе
+        .span3.stat
+          .data
+            span.number {{month_delivery}}
+            | Доставок
+          span.date в этом месяце
+        .span3.stat.last
+          .data
+            span.number {{month_income | add_space_in_price}}
+            | Выручка
+          span.date в этом месяце
+
+#pad-wrapper
+  .row-fluid.chart
+    .btn-group.pull-right
+      button.glow.left(ng-class="{active: range=='week'}",ng-click="range='week';change_range()") НЕДЕЛЯ
+      button.glow.middle(ng-class="{active: range=='month'}", ng-click="range='month';change_range()")  МЕСЯЦ
+      button.glow.right(ng-class="{active: range=='year'}",ng-click="range='year';change_range()")  ГОД
+    .span10
+      h4 Заказы
+      #statsChart(ngchart="ngchart", ng-model="chart_data", chart-xkey="weekday", chart-ykeys="count", chart-labels='Заказов,Доход')
+  .table-products.section
+    .row-fluid.head.filter-block
+        .span8
+            h4
+              | Заказы
+        .pull-right
+          a.btn-flat.new-product(href='/order/add/') + Новый заказ
+
+    .row-fluid
+      table.table.table-hover
+        thead
+          tr
+            th.span1
+              | Дата
+            th.span2
+              span.line
+              | Фирма
+            th.span1
+              span.line
+              | Сумма
+            th.span1
+              span.line
+              | Доставка
+            th.span2
+              span.line
+              | Курьер
+            th.span1.actions
+              span.line
+              | Действия
+        tbody
+          tr(ng-repeat='order in orders')
+            td
+              {{order.date | date:'dd.MM.yyyy HH:mm'}}
+            td
+              a(href='/firm/view/{{order.firm._id}}'){{order.firm.title}}
+            td
+              {{order.order_summ}}
+            td
+              {{order.delivery_cost}}
+            td
+              a(href='/curier/view/{{order.curier._id}}'){{order.curier.name}}
+            td
+              ul.actions
+                li
+                  a(href='/order/edit/{{order._id}}')
+                    i.table-edit
+                li
+                  a(href='/order/view/{{order._id}}')
+                    i.table-settings
+                li.last
+                  a(href='/order/delete/{{order._id}}')
+                    i.table-delete
+
+  //- pagination.pagination-small(boundary-links='true', num-pages='noOfPages', current-page='currentPage', previous-text='\'‹\'', next-text='\'›\'', first-text='\'«\'', last-text='\'»\'', max-size='maxSize')

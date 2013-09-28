@@ -1,0 +1,34 @@
+#pad-wrapper.user-profile
+  .row-fluid.header
+    h3
+      span(ng-show="day")
+        | Итог дня 
+      span(ng-hide="day")
+        | Итог месяца 
+      span.date
+        | ( {{date | date:'dd.MM.yyyy'}} )
+    .row-fluid.filter-block
+      .pull-right
+        input.inputDate(id="inputDate", type="text", ng-model="date", jqdatepicker="jqdatepicker", jq-callback="dateChange")
+  .row-fluid.table.table-products
+    table.table.table-hover
+      thead
+        tr
+          th.span2.sortable
+            a(href='/order/', ng-click="predicate = 'date'; reverse=!reverse;")  Наименование организации
+          th.span2.sortable
+            span.line
+            a(href='/order/', ng-click="predicate = 'order_summ'; reverse=!reverse")  Кол-во доставок
+          th.span2.sortable
+            span.line
+            a(href='/order/', ng-click="predicate = 'delivery_cost'; reverse=!reverse")  Количество руб.
+          th.span1
+      tbody
+        tr(ng-repeat='order in day_orders | orderBy:predicate:reverse')
+          td
+            {{order.firm.title}}
+          td
+            {{order.count}}
+          td
+            {{order.total}}
+          td

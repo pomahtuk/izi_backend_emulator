@@ -1,0 +1,72 @@
+#pad-wrapper.user-profile
+  .profile
+    .row-fluid.header
+      .span8
+        h2 {{firm.title}}
+      a.btn-flat.icon.pull-right.delete-user(href='/firm/delete/{{firm._id}}')
+        i.icon-trash
+      | 
+      a.btn-flat.icon.large.pull-right.edit(href='/firm/edit/{{firm._id}}')
+        | Редактировать
+    hr
+
+    .row-fluid
+      p 
+        strong Описание: 
+        | {{firm.info}}
+      p 
+        strong Адрес: 
+        | {{firm.adress}}
+      p 
+        strong Телефон: 
+        | {{firm.phone}}
+      p 
+        strong Сдельная оплата: 
+        | {{firm.fixed_pay}}
+      p(ng-show='firm.fixed_pay')
+        strong Месячный платёж: 
+        | {{firm.pay_amount}}
+    br
+    br
+
+  .row-fluid.header
+    h3 Заказы
+  .row-fluid.table.table-products
+    table.table.table-hover
+      thead
+        tr
+          th.span1.sortable
+            a(href='/order/', ng-click="predicate = 'date'; reverse=!reverse; sort_server()")  Дата
+          th.span2.sortable
+            span.line
+            a(href='/order/', ng-click="predicate = 'order_summ'; reverse=!reverse")  Сумма
+          th.span2.sortable
+            span.line
+            a(href='/order/', ng-click="predicate = 'delivery_cost'; reverse=!reverse")  Доставка
+          th.span2.sortable
+            span.line
+            a(href='/order/', ng-click="predicate = 'curier.name'; reverse=!reverse")  Курьер
+          th.span1
+            span.line
+            | Действия
+      tbody
+        tr(ng-repeat='order in orders | orderBy:predicate:reverse')
+            td
+              {{order.date | date:'dd.MM.yyyy HH:mm'}}
+            td
+              {{order.order_summ}}
+            td
+              {{order.delivery_cost}}
+            td
+              a(href='/curier/view/{{order.curier._id}}'){{order.curier.name}}
+            td
+              ul.actions
+                li
+                  a(href='/order/edit/{{order._id}}')
+                    i.table-edit
+                li
+                  a(href='/order/view/{{order._id}}')
+                    i.table-settings
+                li.last
+                  a(href='/order/delete/{{order._id}}')
+                    i.table-delete

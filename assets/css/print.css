@@ -1,0 +1,53 @@
+@media print {
+  .navbar, .sidebar, .main-stats, .chart, .stats-row, .new-product, span.line, #sidebar-nav, .filter-block{
+    display: none;
+  }
+
+  table, th, td {
+    border: 1px solid black;
+  }
+
+  th:last-child {
+    display: none !important;
+  }
+  td:last-child{
+    display: none;
+  }
+
+  table{
+    width: 100%;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  .section {
+    border: none;
+    margin: 0px;
+    padding: 0px;
+    box-shadow: none;
+  }
+
+  .content {
+    margin: 0px;
+    padding: 0px;
+    background: #fff;
+    border: none;
+    box-shadow: none;
+    border-radius: 0px 0px 0px 0px;
+  }
+
+  a[href]:after {
+    content: none !important;
+  }
+
+  .header .span10.pull-right{
+    display: none;
+  }
+
+  .header a{
+    display: none;
+  }
+
+}

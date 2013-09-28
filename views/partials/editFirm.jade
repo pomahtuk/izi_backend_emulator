@@ -1,0 +1,35 @@
+#pad-wrapper.new-user
+  .row-fluid.header
+    h3
+      span(ng-show="firm.edit")
+        | Редактировать фирму
+      span(ng-hide="firm.edit")
+        | Создать фирму
+  .row-fluid.form-wrapper
+    .span12
+      .container
+        form.new_user_form.inline-input
+          .span12.field-box
+            label Название:
+            input.span9(type='text', ng-model='firm.title')
+          .span12.field-box
+            label Адресс:
+            input.span9(type='text', ng-model='firm.adress')
+          .span12.field-box
+            label Телефон:
+            input.span9(type='text', ng-model='firm.phone')
+          .span12.field-box
+            label Информация:
+            textarea.span9(ng-model='firm.info')
+          .span12.field-box
+            label.checkbox
+              | Сдельная оплата
+              input(type="checkbox", ng-model='firm.fixed_pay')
+          .span12.field-box(ng-show='firm.fixed_pay')
+            label
+              | Сдельная оплата
+              input.span9(type='text', ng-model='firm.pay_amount')
+          .span11.field-box.actions
+            input.btn-glow.primary(type='button', value='Сохранить', ng-click='editFirm()')
+            span или
+            input.reset(type='reset', value='Отменить')

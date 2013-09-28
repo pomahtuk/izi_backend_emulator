@@ -1,0 +1,93 @@
+extends layout
+
+block body
+  .navbar.navbar-inverse
+    .navbar-inner
+      button#menu-toggler.btn.btn-navbar.visible-phone(type='button')
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      a.brand(href='index.html')
+        img(src='img/logo.png')
+      ul.nav.pull-right
+        li.hidden-phone
+          a(href='#', data-toggle='dropdown')
+            | #{user.username}
+        li.settings.hidden-phone
+          a(href='/logout', role='button')
+            i.icon-share-alt.icon-white
+
+  #sidebar-nav(ng-controller='SidebarCtrl')
+    ul#dashboard-menu
+      li(ng-class="{active: page=='index'}")
+        .pointer(ng-show="page=='index'")
+          .arrow
+          .arrow_border
+        a(href='/')
+          i.icon-home
+          span Главная
+      li(ng-class="{active: page=='order'}")
+        .pointer(ng-show="page=='order'")
+          .arrow
+          .arrow_border
+        a(href='/order/')
+          i.icon-th-list
+          span Заказы
+      li(ng-class="{active: page=='firm'}")
+        .pointer(ng-show="page=='firm'")
+          .arrow
+          .arrow_border
+        a(href='/firm/')
+          i.icon-briefcase
+          span Фирмы
+      li(ng-class="{active: page=='curier'}")
+        .pointer(ng-show="page=='curier'")
+          .arrow
+          .arrow_border
+        a(href='/curier/')
+          i.icon-user
+          span Курьеры
+      li(ng-class="{active: page=='reports'}")
+        .pointer(ng-show="page=='reports'")
+          .arrow
+          .arrow_border
+        a.dropdown-toggle(href='#')
+          i.icon-print
+          span Отчёты
+          i.icon-chevron-down
+        ul.submenu(ng-show="page=='reports'")
+          li
+            a(href="/reports/day/") Итог дня
+          li
+            a(href="/reports/common/") Сводная за день
+          li
+            a(href="/reports/month/") Итог месяца
+      li(ng-class="{active: page=='constructor'}")
+        .pointer(ng-show="page=='constructor'")
+          .arrow
+          .arrow_border
+        a(href='/reports/constructor/')
+          i.icon-wrench
+          span Конструктор
+
+
+  .content
+    .container-fluid(ng-view)
+
+
+
+  != js('jquery-2.0.3.min.js')
+  != js('select2')
+  != js('theme')
+  != js('datepicker')
+  != js('highstock')
+  != js('modules/exporting')
+  != js('angular')
+  != js('ui-bootstrap-tpls')
+  != js('ui-bootstrap')
+  != js('ui-select2')
+  != js('app')
+  != js('services')
+  != js('controllers')
+  != js('filters')
+  != js('directives')

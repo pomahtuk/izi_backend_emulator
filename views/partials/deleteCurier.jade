@@ -1,0 +1,9 @@
+#pad-wrapper.users-list.new-user 
+  .form-wrapper
+    h3 Действительно удалить курьера? Связанные заказы будут удалены!
+    br
+    p {{curier.name}}
+    .span11.field-box.actions
+      button.btn-flat.danger(ng-click='deleteCurier()') Удалить
+      <span></span>
+      button.btn-flat.white(ng-click='home()') Отмена

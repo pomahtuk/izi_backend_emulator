@@ -1,0 +1,26 @@
+!!! 5
+html.login-bg
+head
+    title Detail Admin - Вход
+    meta(http-equiv='Content-Type', content='text/html; charset=utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+
+    != css('bootstrap')
+    != css('bootstrap-responsive')
+    != css('bootstrap-overrides')
+    != css('layout')
+    != css('elements')
+    != css('icons')
+    != css('signin')
+
+  body
+    .row-fluid.login-wrapper
+      a(href='/')
+        img.logo(src='/img/logo-white.png')
+      .span4.box
+        .content-wrap
+          h6 Авторизация
+          form(method='post', action='/login')
+            input.span12(type='text', placeholder='Логин', name='username')
+            input.span12(type='password', placeholder='Пароль', name='password')
+            button.btn-glow.primary.login(type='submit') Войти

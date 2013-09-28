@@ -1,0 +1,67 @@
+#pad-wrapper.user-profile
+  .profile
+    .row-fluid.header
+      .span8
+        h2 {{order._id}}
+      a.btn-flat.icon.pull-right.delete-user(href='/order/delete/{{order._id}}')
+        i.icon-trash
+      | 
+      a.btn-flat.icon.large.pull-right.edit(href='/order/edit/{{order._id}}')
+        | Редактировать
+    hr
+    .container
+      .row-fluid
+        .span3
+          b Дата:
+        .span9
+          {{order.date | date:'dd.MM.yyyy HH:mm'}}
+      .row-fluid
+        .span3
+          b Время:
+        .span9
+          {{order.date | date:'HH:mm'}}
+      .row-fluid
+        .span3
+          b День недели:
+        .span9
+          {{order.date | date:'HH:mm'}}
+      .row-fluid
+        .span3
+          b Фирма:
+        .span9
+          a(href='/firm/view/{{order.firm._id}}') {{order.firm.title}}
+      .row-fluid
+        .span3
+          b Адрес доставки:
+        .span9
+          {{order.delivery_adress}}
+      .row-fluid
+        .span3
+          b Сумма заказа:
+        .span9
+          {{order.order_summ}}
+      .row-fluid
+        .span3
+          b Доставка:
+        .span9
+          {{order.delivery_cost}}
+      .row-fluid
+        .span3
+          b Курьер:
+        .span9
+          a(href='/curier/view/{{order.curier._id}}') {{order.curier.name}}
+      .row-fluid
+        .span3
+          b Комментарий:
+        .span9
+          {{order.comment}}
+      .row-fluid
+        .span3
+          b За город?:
+        .span9
+          {{order.outside}}
+      .row-fluid
+        .span3
+          b Доход курьера:
+        .span9
+          {{order.curier_income}}

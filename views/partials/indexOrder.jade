@@ -1,0 +1,64 @@
+#pad-wrapper.users-list
+  .row-fluid.header
+    h3 Заказы
+    .span10.pull-right
+      input.span5.search(type='text', placeholder='Найти...', ng-model="search")
+      a.btn-flat.success.pull-right(href='/order/add/')
+        span 
+        | + Добавить заказ
+  .row-fluid.table.table-products
+    table.table.table-hover
+      thead
+        tr
+          th.span1.sortable
+            a(href='/order/', ng-click="predicate = 'date'; reverse=!reverse; sort_server()")  Дата
+          th.span1.sortable
+            span.line
+            a(href='/order/', ng-click="predicate = 'firm.title'; reverse=!reverse")  Фирма
+          th.span2.sortable
+            span.line
+            a(href='/order/', ng-click="predicate = 'delivery_adress'; reverse=!reverse")  Адрес доставки
+          th.span1.sortable
+            span.line
+            a(href='/order/', ng-click="predicate = 'order_summ'; reverse=!reverse; sort_server()")  Сумма
+          th.span1.sortable
+            span.line
+            a(href='/order/', ng-click="predicate = 'curier.name'; reverse=!reverse")  Курьер
+          th.span1.sortable
+            span.line
+            a(href='/order/', ng-click="predicate = 'comment'; reverse=!reverse")  Комментарий
+          th.span1.sortable
+            span.line
+            a(href='/order/', ng-click="predicate = 'outside'; reverse=!reverse")  За город?
+          th.span1
+            span.line
+            | Действия
+      tbody
+        tr(ng-repeat='order in orders | filter:search | orderBy:predicate:reverse')
+            td
+              {{order.date | date:'dd.MM.yyyy HH:mm'}}
+            td
+              a(href='/firm/view/{{order.firm._id}}'){{order.firm.title}}
+            td
+              {{order.delivery_adress}}
+            td
+              {{order.order_summ}}
+            td
+              a(href='/curier/view/{{order.curier._id}}'){{order.curier.name}}
+            td
+              {{order.comment}}
+            td
+              {{order.outside}}
+            td
+              ul.actions
+                li
+                  a(href='/order/edit/{{order._id}}')
+                    i.table-edit
+                li
+                  a(href='/order/view/{{order._id}}')
+                    i.table-settings
+                li.last
+                  a(href='/order/delete/{{order._id}}')
+                    i.table-delete
+
+    pagination(on-select-page="page_change(page)", num-pages="noOfPages", current-page="currentPage", class="pagination pull-left", direction-links="true", boundary-links="true", previous-text="'‹'", next-text="'›'", first-text="'«'", last-text="'»'")

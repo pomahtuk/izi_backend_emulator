@@ -1,0 +1,49 @@
+#pad-wrapper.users-list
+  .row-fluid.header
+    h3 Фирмы
+    .span10.pull-right
+      input.span5.search(type='text', placeholder='Найти...', ng-model="search")
+      a.btn-flat.success.pull-right(href='/firm/add/')
+        span 
+        | + Добавить фирму
+  .row-fluid.table.table-products
+    table.table.table-hover
+      thead
+        tr
+          th.span2.sortable
+            a(href='/firm/', ng-click="predicate = 'title'; reverse=!reverse")  Название
+          th.span3.sortable
+            span.line
+            a(href='/firm/', ng-click="predicate = 'adress'; reverse=!reverse")  Адресс
+          th.span3.sortable
+            span.line
+            a(href='/firm/', ng-click="predicate = 'info'; reverse=!reverse")  Описание
+          th.span3.sortable
+            span.line
+            a(href='/firm/', ng-click="predicate = 'phone'; reverse=!reverse")  Телефон
+          th.span3.sortable
+            span.line
+            a(href='/firm/', ng-click="predicate = 'fixed_pay'; reverse=!reverse")  Фикс. оплата
+          th.span1
+            span.line
+            | Действия
+      tbody
+        tr(ng-repeat='firm in firms | filter:search | orderBy:predicate:reverse')
+          td
+            a.name(href='/firm/view/{{firm._id}}') {{firm.title}}
+          td
+            | {{firm.adress}}
+          td
+            | {{firm.info}}
+          td
+            | {{firm.phone}}
+          td
+            | {{firm.fixed_pay}}
+          td
+            ul.actions
+              li
+                a(href='/firm/edit/{{firm._id}}')
+                  i.table-edit
+              li.last
+                a(href='/firm/delete/{{firm._id}}')
+                  i.table-delete
