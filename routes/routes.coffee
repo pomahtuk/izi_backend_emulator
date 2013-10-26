@@ -8,7 +8,7 @@ mmm         = require 'mmmagic'
 Magic       = mmm.Magic
 magic       = new Magic(mmm.MAGIC_MIME_TYPE)
 ffmpeg      = require 'fluent-ffmpeg'
-# QRCode      = require 'qrcode'
+QRCode      = require 'qrcode'
 
 # backend_url = "http://192.168.158.128:3000"
 backend_url = "http://prototype.izi.travel"
@@ -686,7 +686,7 @@ exports.resize_handler = (req, res) ->
 # qr code
 
 exports.qr_code = (req, res) ->
-  # QRCode.toDataURL req.params.data, (error, data)->
-  #   res.header 'Content-Type', 'data:image/png'
-  #   res.send data
-  res.send 'data'
+  QRCode.toDataURL req.params.data, (error, data)->
+    res.header 'Content-Type', 'data:image/png'
+    res.send data
+  # res.send 'data'
