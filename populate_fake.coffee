@@ -3,27 +3,7 @@ Faker    = require 'Faker'
 models   = require './models/db'
 QRCode   = require 'qrcode'
 # require 'date-utils'
-#mongoose.set('debug', true)
-
-# firmSchema  = new mongoose.Schema
-#   title:       String
-#   info:        String
-#   adress:      String
-
-# orderSchema = new mongoose.Schema
-#   date:           { type: Date, default: Date.now }
-#   day_of_week:    String
-#   firm:           { type : mongoose.Schema.ObjectId, ref : 'firm' }
-#   order_summ:     Number
-#   delivery_cost:  Number
-#   curier:         { type : mongoose.Schema.ObjectId, ref : 'curier' }
-
-# curierSchema = new mongoose.Schema
-#   name:         String
-
-# Order    = mongoose.model 'order', orderSchema
-# Firm     = mongoose.model 'firm', firmSchema
-# Curier   = mongoose.model 'curier', curierSchema
+mongoose.set('debug', false)
 
 mongoose.connect 'mongodb://localhost/iziteq'
 
@@ -33,40 +13,20 @@ mongoose.connect 'mongodb://localhost/iziteq'
 # exports.QuizAnswer      = QuizAnswer
 # exports.ContentProvider = ContentProvider
 
-content_provider = new models.ContentProvider
-  name: 'test prvider'
-  limited_pass: '177591'
-  copyright: 'pman'
-  commerce: false
-  quizzes: true
-  preffered_app: 'generic'
-  status: 'published'
-
-content_provider.save()
-
-museum = new models.StorySet
-  content_provider: content_provider._id
-  type:             'museum'
-  distance:         100
-  duration:         100
-  status:           'published'
-  route:            'ololo'
-  category:         'ololo'
-  name:             'test museum'
-
-museum.save()
+args = process.argv.splice(2)
+mode = args[0]
 
 lang     = ['ru', 'en', 'es']
 corr_map = [true, false, false, false] 
 
-create_stories_for_object = (object) ->
-  for i in [0..2]
+create_stories_for_object = (object, content_provider, story_name = 'Story in') ->
+  for i in [0..0]
     story = {
-      name: "Story in #{lang[i]}"
+      name: "#{story_name}"
       playback_algorithm: 'no matter'
       content_provider:   content_provider._id
       story_type:         'story'
-      status:             'published'
+      status:             'passcode'
       language:           lang[i]
       short_description:  Faker.Lorem.paragraph()
       long_description:   Faker.Lorem.paragraph()
@@ -89,30 +49,131 @@ create_stories_for_object = (object) ->
         correct:  corr_map[i]
       answer.save()
 
-create_stories_for_object(museum)
+create_base_records = ->
+  content_provider = new models.ContentProvider
+    name: 'test prvider'
+    limited_pass: '177591'
+    copyright: 'pman'
+    commerce: false
+    quizzes: true
+    preffered_app: 'generic'
+    status: 'published'
 
-for i in [0..24]
-  exhibit = {
+  content_provider.save()
+
+  provider_id = content_provider._id
+
+  museum = new models.StorySet
     content_provider: content_provider._id
-    type:             'exhibit'
+    type:             'museum'
     distance:         100
     duration:         100
     status:           'published'
     route:            'ololo'
     category:         'ololo'
-    name:             "test exhibit ##{i}"
-    parent:           museum._id
-  }
-  exhibit = new models.StorySet(exhibit)
-  exhibit.save()
+    name:             'test museum'
+    number:           0
 
-  for i in [0..1]
-    media = new models.Media  
-      parent: exhibit._id
-      image:  'http://media.izi.travel/fc85dcc2-3e95-40a9-9a78-14705a106230/14845c98-05ec-4da8-8aff-11808ecc123f_800x600.jpg'
-      thumb:  'http://media.izi.travel/fc85dcc2-3e95-40a9-9a78-14705a106230/7104d8b7-2f73-4b98-bfb2-b4245a325ce3_480x360.jpg'
+  museum.save()
 
-    media.save()
+  museum_id = museum._id
 
+  create_stories_for_object museum, content_provider
 
-  create_stories_for_object(exhibit)
+  for i in [0..24]
+    exhibit = {
+      content_provider: content_provider._id
+      type:             'exhibit'
+      distance:         100
+      duration:         100
+      status:           'published'
+      route:            'ololo'
+      category:         'ololo'
+      name:             "test exhibit ##{i}"
+      parent:           museum._id
+      number:           i
+    }
+    exhibit = new models.StorySet(exhibit)
+    exhibit.save()
+
+    # for i in [0..1]
+    #   media = new models.Media  
+    #     parent:       exhibit._id
+    #     name:         '7104d8b7-2f73-4b98-bfb2-b4245a325ce3_480x360.jpg'
+    #     siz:          100
+    #     url:          'http://habrastorage.org/storage3/cb6/d13/0a0/cb6d130a09c3c4b13446c3283067033b.jpg'
+    #     thumbnailUrl: 'http://habrastorage.org/storage3/cb6/d13/0a0/cb6d130a09c3c4b13446c3283067033b.jpg'
+    #     deleteType:   "DELETE"
+    #     type:         "image"
+    #   media.save()
+
+    create_stories_for_object exhibit, content_provider
+
+  console.log "provider: #{provider_id}  and museum:  #{museum_id}"
+
+create_museums = ->
+  models.ContentProvider.find {}, (err, provider) ->
+    provider = provider[0]
+
+    for i in [0..9]
+
+      museum = new models.StorySet
+        content_provider: provider._id
+        type:             "museum"
+        distance:         100
+        duration:         100
+        status:           'passcode'
+        route:            'ololo'
+        category:         'ololo'
+        name:             "test museum #{i}"
+        number:           0
+
+      museum.save()
+
+      # for i in [0..1]
+      #   media = new models.Media  
+      #     parent:       museum._id
+      #     name:         '7104d8b7-2f73-4b98-bfb2-b4245a325ce3_480x360.jpg'
+      #     siz:          100
+      #     url:          'http://habrastorage.org/storage3/cb6/d13/0a0/cb6d130a09c3c4b13446c3283067033b.jpg'
+      #     thumbnailUrl: 'http://habrastorage.org/storage3/cb6/d13/0a0/cb6d130a09c3c4b13446c3283067033b.jpg'
+      #     deleteType:   "DELETE"
+      #     type:         "image"
+      #   media.save()
+
+      create_stories_for_object museum, provider, "Museum #{i}"
+
+  # mongoose.connection.close()
+
+delete_records = ->
+  models.StorySet.find({}).remove().exec()
+  models.Story.find({}).remove().exec()
+  models.Quiz.find({}).remove().exec()
+  models.QuizAnswer.find({}).remove().exec()
+  models.ContentProvider.find({}).remove().exec()
+  mongoose.connection.close()
+          
+switch mode
+  when 'create_base'
+    console.log 'creating'
+    create_base_records()
+    setTimeout ->
+      mongoose.connection.close()
+    , 2000
+  when 'create_museums'
+    console.log 'museum'
+    create_museums()
+    setTimeout ->
+      mongoose.connection.close()
+    , 2000
+  when 'drop_database'
+    console.log 'droping'
+    delete_records()
+  when 'help'
+    console.log "create_base  drop_database  create_museums"
+    mongoose.connection.close()
+  else
+    console.log "create_base  drop_database  create_museums"
+    mongoose.connection.close()
+    true
+

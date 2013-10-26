@@ -4,11 +4,12 @@ mongoose.set('debug', true)
 story_setSchema = new mongoose.Schema
   content_provider: { type : mongoose.Schema.ObjectId, ref : 'content_provider' }
   type:             String
-  distance:         Number
-  duration:         Number
+  distance:         String
+  duration:         String
   status:           String
   route:            String
   category:         String
+  language:         String
   parent:           { type : mongoose.Schema.ObjectId, ref : 'story_set' }
   name:             String
   number:           Number
@@ -36,9 +37,16 @@ quiz_answerSchema = new mongoose.Schema
   correct:  Boolean
 
 mediaSchema = new mongoose.Schema
-  parent: String
-  image:  String
-  thumb:  String
+  parent:       String
+  name:         String
+  size:         Number
+  url:          String
+  thumbnailUrl: String
+  deleteUrl:    String
+  deleteType:   String
+  type:         String
+  selection:    String
+  updated:      { type: Date, default: Date.now }
 
 content_providerSchema = new mongoose.Schema
   name:          String
