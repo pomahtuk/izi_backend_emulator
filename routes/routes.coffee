@@ -8,10 +8,10 @@ mmm         = require 'mmmagic'
 Magic       = mmm.Magic
 magic       = new Magic(mmm.MAGIC_MIME_TYPE)
 ffmpeg      = require 'fluent-ffmpeg'
-QRCode      = require 'qrcode'
+# QRCode      = require 'qrcode'
 
-backend_url = "http://192.168.158.128:3000"
-# backend_url = "http://prototype.izi.travel"
+# backend_url = "http://192.168.158.128:3000"
+backend_url = "http://prototype.izi.travel"
 
 exports.certan_provider = (req, res) ->
   cp_id = req.params.cp_id
@@ -523,11 +523,15 @@ file_callback = (file, callback) ->
       name         = file.path.split('/')
       name         = name[name.length - 1]
       ext          = file.originalFilename.split('.')
-      ext          = '.'+ext[ext.length - 1]
+      ext          = '.' + ext[ext.length - 1]
       resized_name = name.split(ext)[0] + '_480x360' + ext
 
-      imageMagick(file.path).resize('480', '360').write "./public/#{resized_name}", (err) ->
+      console.log file.path
+
+      # imageMagick(file.path).resize('480', '360').write "./public/#{resized_name}", (err) ->
+      imageMagick(file.path).resize('480', '360').write "/home/ubuntu/izi_backend_emulator/public/#{resized_name}", (err) ->
         if err
+          console.log err
           callback err
         else
           media              = new models.Media
@@ -633,7 +637,17 @@ exports.upload_handler = (req, res) ->
   async.map req.files.files, file_callback, (err, result) ->
     res.header 'Content-Type', 'application/json'
     res.send JSON.stringify(result)
- 
+
+makeid = ->
+  text = ""
+  possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+  i = 0
+
+  while i < 5
+    text += possible.charAt(Math.floor(Math.random() * possible.length))
+    i++
+  text
+
 exports.resize_handler = (req, res) ->
 
   parent   = req.params.image_id
@@ -649,9 +663,10 @@ exports.resize_handler = (req, res) ->
         media_name   = media_name[media_name.length - 1]
         ext          = media_name.split('.')
         ext          = '.'+ext[ext.length - 1]
-        resized_name = media_name.split(ext)[0] + '_thumb' + ext
+        resized_name = media_name.split(ext)[0] + '_thumb' + makeid() + ext
 
-        imageMagick("./public/#{media_name}").crop(params.w, params.h, params.x, params.y).resize('200', '150').write "./public/#{resized_name}", (err) ->
+        imageMagick("/home/ubuntu/izi_backend_emulator/public/#{media_name}").crop(params.w, params.h, params.x, params.y).resize('200', '150').write "/home/ubuntu/izi_backend_emulator/public/#{resized_name}", (err) ->
+        # imageMagick("./public/#{media_name}").crop(params.w, params.h, params.x, params.y).resize('200', '150').write "./public/#{resized_name}", (err) ->
           if err
             console.log err
           else
@@ -671,7 +686,7 @@ exports.resize_handler = (req, res) ->
 # qr code
 
 exports.qr_code = (req, res) ->
-  QRCode.toDataURL req.params.data, (error, data)->
-    res.header 'Content-Type', 'data:image/png'
-    res.send data
-  # res.send 'data'
+  # QRCode.toDataURL req.params.data, (error, data)->
+  #   res.header 'Content-Type', 'data:image/png'
+  #   res.send data
+  res.send 'data'
