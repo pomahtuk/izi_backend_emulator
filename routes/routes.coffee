@@ -526,27 +526,49 @@ file_callback = (file, callback) ->
       ext          = '.' + ext[ext.length - 1]
       resized_name = name.split(ext)[0] + '_480x360' + ext
 
-      console.log file.path
-
-      # imageMagick(file.path).resize('480', '360').write "./public/#{resized_name}", (err) ->
-      imageMagick(file.path).resize('480', '360').write "/home/ubuntu/izi_backend_emulator/public/#{resized_name}", (err) ->
+      imageMagick(file.path).size (err, size) ->
         if err
-          console.log err
           callback err
         else
-          media              = new models.Media
-          media.name         = resized_name
-          media.size         = 100
-          media.url          = "#{backend_url}/#{name}"
-          media.thumbnailUrl = "#{backend_url}/#{resized_name}"
-          media.deleteUrl    = "#{backend_url}/media/#{media._id}"
-          media.deleteType   = "DELETE"
-          media.parent       = file.parent
-          media.type         = 'image'
-          media.updated      =  new Date
-          console.log "resized #{name} to #{resized_name}, updated media #{media._id}"
-          media.save()
-          callback null, media
+          width = 0
+          height = 0
+          if size.width >= size.height and size.width*0.75 >= size.height
+            console.log 'wider'
+            width  = size.height / 0.75
+            height = size.height
+          else
+            console.log 'higher'
+            width  = size.width
+            height = size.width * 0.75
+
+          params = 
+            x: 0
+            y: 0
+            x2: width
+            y2: height
+            width: width
+            height: height
+
+          # imageMagick(file.path).crop(width, height, 0, 0).write "./public/#{resized_name}", (err) ->
+          imageMagick(file.path).crop(width, height, 0, 0).resize('200', '150').write "/home/ubuntu/izi_backend_emulator/public/#{resized_name}", (err) ->
+            if err
+              console.log err
+              callback err
+            else
+              media              = new models.Media
+              media.name         = resized_name
+              media.size         = 100
+              media.url          = "#{backend_url}/#{name}"
+              media.thumbnailUrl = "#{backend_url}/#{resized_name}"
+              media.deleteUrl    = "#{backend_url}/media/#{media._id}"
+              media.deleteType   = "DELETE"
+              media.selection    = JSON.stringify(params)
+              media.parent       = file.parent
+              media.type         = 'image'
+              media.updated      =  new Date
+              console.log "resized #{name} to #{resized_name}, updated media #{media._id}"
+              media.save()
+              callback null, media
 
     else if result.indexOf('audio') isnt -1
 
