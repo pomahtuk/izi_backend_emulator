@@ -10,8 +10,10 @@ magic       = new Magic(mmm.MAGIC_MIME_TYPE)
 ffmpeg      = require 'fluent-ffmpeg'
 QRCode      = require 'qrcode'
 
-# backend_url = "http://192.168.158.128:3000"
-backend_url = "http://prototype.izi.travel"
+# backend_url  = "http://192.168.158.128:3000"
+backend_url  = "http://prototype.izi.travel"
+# backend_path = "./"
+backend_path = "/home/ubuntu/izi_backend_emulator/"
 
 exports.certan_provider = (req, res) ->
   cp_id = req.params.cp_id
@@ -550,13 +552,12 @@ file_callback = (file, callback) ->
             width: width
             height: height
 
-          # imageMagick(file.path).crop(width, height, 0, 0).write "./public/#{resized_name}", (err) ->
-          imageMagick(file.path).crop(width, height, 0, 0).resize('200', '150').write "/home/ubuntu/izi_backend_emulator/public/#{resized_name}", (err) ->
+          imageMagick(file.path).crop(width, height, 0, 0).write "#{backend_path}public/#{resized_name}", (err) ->
             if err
               console.log err
               callback err
             else
-              models.Media.find {'parent':file.parent}, null, {sort: {cover: -1, order: 1}} , (err, images) ->
+              models.Media.find {'parent':file.parent}, null, {sort: {cover: -1,order: 1}} , (err, images) ->
                 order = 0
                 if images.length > 0
                   last_img = images[images.length-1]
@@ -564,7 +565,11 @@ file_callback = (file, callback) ->
                 media              = new models.Media
                 media.name         = resized_name
                 media.size         = 100
-                media.order       = order
+                media.order        = order
+                media.cover        = if order is 0
+                  true
+                else
+                  false                
                 media.url          = "#{backend_url}/#{name}"
                 media.thumbnailUrl = "#{backend_url}/#{resized_name}"
                 media.deleteUrl    = "#{backend_url}/media/#{media._id}"
@@ -595,8 +600,7 @@ file_callback = (file, callback) ->
         else
           file.originalFilename
 
-        # proc = new ffmpeg({source:file.path}).withAudioCodec('libvorbis').toFormat('ogg').saveToFile "./public/#{converted}", (retcode, error) ->
-        proc = new ffmpeg({source:file.path}).withAudioCodec('libvorbis').toFormat('ogg').saveToFile "/home/ubuntu/izi_backend_emulator/public/#{converted}", (retcode, error) ->
+        proc = new ffmpeg({source:file.path}).withAudioCodec('libvorbis').toFormat('ogg').saveToFile "#{backend_path}public/#{converted}", (retcode, error) ->
           if error
             console.log error
           media.name         = client_name
@@ -695,8 +699,7 @@ exports.resize_handler = (req, res) ->
         ext          = '.'+ext[ext.length - 1]
         resized_name = media_name.split(ext)[0] + '_thumb' + makeid() + ext
 
-        imageMagick("/home/ubuntu/izi_backend_emulator/public/#{media_name}").crop(params.w, params.h, params.x, params.y).resize('200', '150').write "/home/ubuntu/izi_backend_emulator/public/#{resized_name}", (err) ->
-        # imageMagick("./public/#{media_name}").crop(params.w, params.h, params.x, params.y).resize('200', '150').write "./public/#{resized_name}", (err) ->
+        imageMagick("#{backend_path}public/#{media_name}").crop(params.w, params.h, params.x, params.y).resize('200', '150').write "#{backend_path}public/#{resized_name}", (err) ->
           if err
             console.log err
           else
@@ -719,4 +722,3 @@ exports.qr_code = (req, res) ->
   QRCode.toDataURL req.params.data, (error, data)->
     res.header 'Content-Type', 'data:image/png'
     res.send data
-  # res.send 'data'

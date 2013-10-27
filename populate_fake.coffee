@@ -28,8 +28,8 @@ create_stories_for_object = (object, content_provider, story_name = 'Story in') 
       story_type:         'story'
       status:             'passcode'
       language:           lang[i]
-      short_description:  Faker.Lorem.paragraph()
-      long_description:   Faker.Lorem.paragraph()
+      short_description:  ''
+      long_description:   ''
       story_set:          object._id
     }
     story = new models.Story(story)
