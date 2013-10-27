@@ -77,7 +77,7 @@ fetch_stories = (exhibit, callback) ->
       else
         ex_result = {}
         ex_result.exhibit = exhibit
-        models.Media.find {'parent': exhibit._id, 'type': 'image'}, null, {sort: {updated: -1}} , (err, media) ->
+        models.Media.find {'parent': exhibit._id, 'type': 'image'}, null, {sort: {cover: -1, order: 1}}, (err, media) ->
           if err
             callback err
           else
@@ -491,6 +491,7 @@ exports.create_media = (req, res) ->
 exports.update_media = (req, res) ->
   id   = req.params.m_id
   data = req.body
+  # console.log req
   models.Media.findOne {'_id': id}, (err, media) ->
     if err
       console.log err
@@ -498,6 +499,8 @@ exports.update_media = (req, res) ->
       media.parent  = data.parent
       media.image   = data.image
       media.thumb   = data.thumb
+      media.cover   = data.cover
+      media.order   = data.order
 
       media.save()
       res.send 'ok'
@@ -533,11 +536,9 @@ file_callback = (file, callback) ->
           width = 0
           height = 0
           if size.width >= size.height and size.width*0.75 >= size.height
-            console.log 'wider'
             width  = size.height / 0.75
             height = size.height
           else
-            console.log 'higher'
             width  = size.width
             height = size.width * 0.75
 
@@ -555,20 +556,26 @@ file_callback = (file, callback) ->
               console.log err
               callback err
             else
-              media              = new models.Media
-              media.name         = resized_name
-              media.size         = 100
-              media.url          = "#{backend_url}/#{name}"
-              media.thumbnailUrl = "#{backend_url}/#{resized_name}"
-              media.deleteUrl    = "#{backend_url}/media/#{media._id}"
-              media.deleteType   = "DELETE"
-              media.selection    = JSON.stringify(params)
-              media.parent       = file.parent
-              media.type         = 'image'
-              media.updated      =  new Date
-              console.log "resized #{name} to #{resized_name}, updated media #{media._id}"
-              media.save()
-              callback null, media
+              models.Media.find {'parent':file.parent}, null, {sort: {cover: -1, order: 1}} , (err, images) ->
+                order = 0
+                if images.length > 0
+                  last_img = images[images.length-1]
+                  order = last_img.order + 1 if last_img.order?
+                media              = new models.Media
+                media.name         = resized_name
+                media.size         = 100
+                media.order       = order
+                media.url          = "#{backend_url}/#{name}"
+                media.thumbnailUrl = "#{backend_url}/#{resized_name}"
+                media.deleteUrl    = "#{backend_url}/media/#{media._id}"
+                media.deleteType   = "DELETE"
+                media.selection    = JSON.stringify(params)
+                media.parent       = file.parent
+                media.type         = 'image'
+                media.updated      =  new Date
+                console.log "resized #{name} to #{resized_name}, updated media #{media._id}"
+                media.save()
+                callback null, media
 
     else if result.indexOf('audio') isnt -1
 
@@ -588,7 +595,8 @@ file_callback = (file, callback) ->
         else
           file.originalFilename
 
-        proc = new ffmpeg({source:file.path}).withAudioCodec('libvorbis').toFormat('ogg').saveToFile "./public/#{converted}", (retcode, error) ->
+        # proc = new ffmpeg({source:file.path}).withAudioCodec('libvorbis').toFormat('ogg').saveToFile "./public/#{converted}", (retcode, error) ->
+        proc = new ffmpeg({source:file.path}).withAudioCodec('libvorbis').toFormat('ogg').saveToFile "/home/ubuntu/izi_backend_emulator/public/#{converted}", (retcode, error) ->
           if error
             console.log error
           media.name         = client_name

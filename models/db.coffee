@@ -46,6 +46,8 @@ mediaSchema = new mongoose.Schema
   deleteType:   String
   type:         String
   selection:    String
+  order:        Number
+  cover:        Boolean
   updated:      { type: Date, default: Date.now }
 
 content_providerSchema = new mongoose.Schema
