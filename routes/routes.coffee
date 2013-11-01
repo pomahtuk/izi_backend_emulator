@@ -10,10 +10,10 @@ magic       = new Magic(mmm.MAGIC_MIME_TYPE)
 ffmpeg      = require 'fluent-ffmpeg'
 QRCode      = require 'qrcode'
 
-backend_url  = "http://192.168.158.128:3000"
-# backend_url  = "http://prototype.izi.travel"
-backend_path = "./"
-# backend_path = "/home/ubuntu/izi_backend_emulator/"
+# backend_url  = "http://192.168.158.128:3000"
+backend_url  = "http://prototype.izi.travel"
+# backend_path = "./"
+backend_path = "/home/ubuntu/izi_backend_emulator/"
 
 exports.certan_provider = (req, res) ->
   cp_id = req.params.cp_id
