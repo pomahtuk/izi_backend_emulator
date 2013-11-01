@@ -168,6 +168,10 @@ app.post   "/api/media", routes.create_media
 app.put    "/api/media/:m_id", routes.update_media
 app.delete "/api/media/:m_id", routes.delete_media
 
+app.post   "/api/media_mapping", routes.create_mapping
+app.put    "/api/media_mapping/:map_id", routes.update_mapping
+app.delete "/api/media_mapping/:map_id", routes.delete_mapping
+
 app.get    "/api/story_set/:e_id", routes.certan_story_set
 app.post   "/api/story_set", routes.create_story_set
 app.put    "/api/story_set/:e_id", routes.update_story_set

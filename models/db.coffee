@@ -1,5 +1,5 @@
 mongoose = require 'mongoose'
-# mongoose.set('debug', true)
+mongoose.set('debug', true)
 
 story_setSchema = new mongoose.Schema
   content_provider: { type : mongoose.Schema.ObjectId, ref : 'content_provider' }
@@ -47,8 +47,14 @@ mediaSchema = new mongoose.Schema
   type:         String
   selection:    String
   order:        Number
+  timestamp:    Number
   cover:        Boolean
   updated:      { type: Date, default: Date.now }
+
+media_mappingSchema = new mongoose.Schema
+  timestamp: Number
+  language:  String
+  media:     { type : mongoose.Schema.ObjectId, ref : 'media' }
 
 content_providerSchema = new mongoose.Schema
   name:          String
@@ -70,6 +76,7 @@ Quiz            = mongoose.model 'quiz', quizSchema
 QuizAnswer      = mongoose.model 'quiz_answer', quiz_answerSchema
 ContentProvider = mongoose.model 'content_provider', content_providerSchema
 Media           = mongoose.model 'media', mediaSchema
+MediaMapping    = mongoose.model 'media_mapping', media_mappingSchema
 
 exports.User            = User
 exports.StorySet        = StorySet
@@ -78,3 +85,4 @@ exports.Quiz            = Quiz
 exports.QuizAnswer      = QuizAnswer
 exports.ContentProvider = ContentProvider
 exports.Media           = Media
+exports.MediaMapping    = MediaMapping

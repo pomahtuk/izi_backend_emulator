@@ -79,22 +79,42 @@ fetch_stories = (exhibit, callback) ->
       else
         ex_result = {}
         ex_result.exhibit = exhibit
-        models.Media.find {'parent': exhibit._id, 'type': 'image'}, null, {sort: {cover: -1, order: 1}}, (err, media) ->
+        models.Media.find {'parent': exhibit._id, 'type': 'image'}, null, {sort: {order: 1}}, (err, media) ->
           if err
             callback err
           else
             ex_result.images  = media
-
-          async.map stories, fetch_quiz, (err, result) ->
-            callback err if err
-            ex_result.stories = result
-            # callback null, ex_result
-            async.map result, fetch_images, (err, img_result) ->
+            async.map media, fetch_mappings, (err, m_result) ->
               callback err if err
-              ex_result.stories = img_result
-              callback null, ex_result
+              # console.log 'fetched'
+              ex_result.images = m_result
+
+              async.map stories, fetch_quiz, (err, result) ->
+                callback err if err
+                ex_result.stories = result
+                # callback null, ex_result
+                async.map result, fetch_images, (err, img_result) ->
+                  callback err if err
+                  ex_result.stories = img_result
+                  callback null, ex_result
   else
     callback 'error'
+
+fetch_mappings = (image, callback) ->
+  if image?
+    models.MediaMapping.find {'media': image._id}, (err, media_mappings) ->
+      if err
+        callback err
+      else
+        result = {}
+        result.mappings = {}
+        result.image = image
+        for mapping in media_mappings
+          result.mappings[mapping.language] = mapping
+        # result.mappings = media_mappings
+        callback null, result
+  else
+    callback 'error'  
 
 fetch_images = (story, callback) ->
   if story?
@@ -498,12 +518,11 @@ exports.update_media = (req, res) ->
     if err
       console.log err
     else
-      media.parent  = data.parent
-      media.image   = data.image
-      media.thumb   = data.thumb
-      media.cover   = data.cover
-      media.order   = data.order
-
+      media.parent      = data.parent
+      media.image       = data.image
+      media.thumb       = data.thumb
+      media.cover       = data.cover
+      media.order       = data.order
       media.save()
       res.send 'ok'
 
@@ -515,6 +534,40 @@ exports.delete_media = (req, res) ->
       res.send media._id
     else
       res.send 'nope'
+
+# media mapping
+
+exports.update_mapping = (req, res) ->
+  id   = req.params.map_id
+  data = req.body
+  models.MediaMapping.findOne {'_id': id}, (err, media_mapping) ->
+    if err
+      console.log err
+    else
+      console.log media_mapping
+      media_mapping.timestamp = data.timestamp
+      media_mapping.language  = data.language
+      media_mapping.media     = data.media
+      media_mapping.save()
+      res.send 'ok'
+
+exports.create_mapping = (req, res) ->
+  console.log req.body
+  media_mapping = new models.MediaMapping(req.body)
+  media_mapping.save()
+  console.log "Saved media_mapping " + media_mapping._id
+  res.header 'Content-Type', 'application/json'
+  res.send JSON.stringify(media_mapping)
+
+exports.delete_mapping = (req, res) ->
+  models.MediaMapping.findById req.params.map_id, (err, media_mapping) ->
+    if media_mapping?
+      media_mapping.remove media_mapping
+      console.log "Deleted media_mapping " + media_mapping._id
+      res.send media_mapping._id
+    else
+      res.send 'nope'
+
 
 # images manipulation
 
@@ -557,7 +610,7 @@ file_callback = (file, callback) ->
               console.log err
               callback err
             else
-              models.Media.find {'parent':file.parent}, null, {sort: {cover: -1,order: 1}} , (err, images) ->
+              models.Media.find {'parent':file.parent}, null, {sort: {order: 1}} , (err, images) ->
                 order = 0
                 if images.length > 0
                   last_img = images[images.length-1]
