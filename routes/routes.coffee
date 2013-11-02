@@ -9,6 +9,10 @@ Magic       = mmm.Magic
 magic       = new Magic(mmm.MAGIC_MIME_TYPE)
 ffmpeg      = require 'fluent-ffmpeg'
 QRCode      = require 'qrcode'
+sys         = require 'util'
+fs          = require 'fs'
+http        = require 'http'
+https       = require 'https'
 
 # backend_url  = "http://192.168.158.128:3000"
 backend_url  = "http://prototype.izi.travel"
@@ -544,7 +548,6 @@ exports.update_mapping = (req, res) ->
     if err
       console.log err
     else
-      console.log media_mapping
       media_mapping.timestamp = data.timestamp
       media_mapping.language  = data.language
       media_mapping.media     = data.media
@@ -568,20 +571,36 @@ exports.delete_mapping = (req, res) ->
     else
       res.send 'nope'
 
-
 # images manipulation
+
+makeid = ->
+  text = ""
+  possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+  i = 0
+
+  while i < 5
+    text += possible.charAt(Math.floor(Math.random() * possible.length))
+    i++
+  text
 
 file_callback = (file, callback) ->
 
   magic.detectFile file.path, (err, result) ->
     throw err  if err
 
+    # console.log result, file
+
     if result.indexOf('image') isnt -1
 
-      name         = file.path.split('/')
-      name         = name[name.length - 1]
-      ext          = file.originalFilename.split('.')
-      ext          = '.' + ext[ext.length - 1]
+      if file.originalFilename is 'blob' 
+        ext  = '.' + result.split('/')[1]
+        name = makeid() + ext
+      else
+        ext  = file.originalFilename.split('.')
+        ext  = '.' + ext[ext.length - 1]
+        name = file.path.split('/')
+        name = name[name.length - 1]
+
       resized_name = name.split(ext)[0] + '_480x360' + ext
 
       imageMagick(file.path).size (err, size) ->
@@ -725,16 +744,6 @@ exports.upload_handler = (req, res) ->
     res.header 'Content-Type', 'application/json'
     res.send JSON.stringify(result)
 
-makeid = ->
-  text = ""
-  possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-  i = 0
-
-  while i < 5
-    text += possible.charAt(Math.floor(Math.random() * possible.length))
-    i++
-  text
-
 exports.resize_handler = (req, res) ->
 
   parent   = req.params.image_id
@@ -769,9 +778,77 @@ exports.resize_handler = (req, res) ->
         res.header 'Content-Type', 'application/json'
         res.send JSON.stringify(media)   
 
+exports.imagedata = (req, res) ->
+  # If a URL and callback parameters are present 
+  if req.param("url") and req.param("callback")    
+    # Get the parameters
+    url = unescape req.param("url")
+    callback = req.param("callback")
+
+    protocol = url.split(':')[0]
+
+    req_sender = if protocol is 'https'
+      https
+    else
+      http
+
+    request = req_sender.get url, (result) ->
+      imagedata = ""
+      mimetype  = result.headers["content-type"]
+
+      if mimetype is "image/gif" or mimetype is "image/jpeg" or mimetype is "image/jpg" or mimetype is "image/png" or mimetype is "image/tiff"
+        # Create the prefix for the data URL
+        type_prefix = "data:" + mimetype + ";base64,"
+        filename = "#{backend_path}public/" + url.substring(url.lastIndexOf("/") + 1)
+
+        result.setEncoding "binary"
+        result.on "data", (chunk) ->
+          imagedata += chunk
+        result.on "end", ->
+          buffer   = new Buffer(imagedata, "binary")
+          image_64 = type_prefix + buffer.toString("base64")
+          fs.writeFile filename, imagedata, "binary", (err) ->
+            throw err if err
+            console.log "File saved."
+            imageMagick(filename).size (err, size) ->
+              # Delete the tmp image
+              fs.unlink filename
+              # Error getting dimensions
+              unless err
+                width = size.width
+                height = size.height
+                # The data to be returned 
+                return_variable =
+                  width: width
+                  height: height
+                  data: image_64
+                # Stringifiy the return variable and wrap it in the callback for JSONP compatibility
+                return_variable = callback + "(" + JSON.stringify(return_variable) + ");"
+                # Set the headers as OK and JS
+                res.writeHead 200,
+                  "Content-Type": "application/javascript; charset=UTF-8"
+                # Return the data
+                res.end return_variable
+              else
+                res.send "problem", 500 
+  else
+    res.send "No URL or no callback was specified. These are required", 400
+
+exports.media_reorder = (req, res) ->
+  new_indexes = req.body
+  models.Media.find { 'parent': req.params.parent_id }, (err, media_arr) ->
+    if err
+      console.log err
+    else
+      for media, index in media_arr
+        media.order = new_indexes[media._id]
+        media.save()
+      res.send 'ok'
+
 # qr code
 
 exports.qr_code = (req, res) ->
   QRCode.toDataURL req.params.data, (error, data)->
     res.header 'Content-Type', 'data:image/png'
     res.send data
+

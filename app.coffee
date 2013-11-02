@@ -85,7 +85,7 @@ mongoose.connect 'mongodb://localhost/iziteq'
 allowCrossDomain = (req, res, next) ->
   res.header "Access-Control-Allow-Origin", "*"
   res.header "Access-Control-Allow-Methods", "GET,PUT,POST,DELETE"
-  res.header "Access-Control-Allow-Headers", "Content-Type"
+  res.header "Access-Control-Allow-Headers", "Content-Type, Content-Disposition"
   next()
 
 app = express()
@@ -143,6 +143,8 @@ app.use express.errorHandler() if "development" is app.get("env")
 app.post   "/api/upload/:parent_id", routes.upload_handler
 app.put    "/api/upload/:parent_id", routes.upload_handler
 
+app.get    "/api/imagedata", routes.imagedata
+
 app.post   "/api/resize_thumb/:image_id", routes.resize_handler
 app.put    "/api/resize_thumb/:image_id", routes.resize_handler
 
@@ -167,6 +169,7 @@ app.get    "/api/media/:m_id", routes.certan_media
 app.post   "/api/media", routes.create_media
 app.put    "/api/media/:m_id", routes.update_media
 app.delete "/api/media/:m_id", routes.delete_media
+app.post   "/api/media_for/:parent_id/reorder", routes.media_reorder
 
 app.post   "/api/media_mapping", routes.create_mapping
 app.put    "/api/media_mapping/:map_id", routes.update_mapping
