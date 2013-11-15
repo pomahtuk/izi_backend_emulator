@@ -768,7 +768,7 @@ exports.resize_handler = (req, res) ->
         resized_name = if params.mode is 'thumb'
           media_name.split(ext)[0] + '_thumb' + makeid() + ext
         else
-          media_name
+          media_name.split(ext)[0] + makeid() + ext
 
         media_resized_callback = (media) ->
           media.type         = 'image'
