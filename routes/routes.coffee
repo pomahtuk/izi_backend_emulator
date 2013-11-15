@@ -760,7 +760,7 @@ exports.resize_handler = (req, res) ->
     if err
       console.log err
     else
-      if params.mode?
+      if params.mode? and params.x?
         media_name   = media.url.split('/')
         media_name   = media_name[media_name.length - 1]
         ext          = media_name.split('.')
@@ -779,13 +779,14 @@ exports.resize_handler = (req, res) ->
           res.header 'Content-Type', 'application/json'
           res.send JSON.stringify(media)
 
-        imageMagick("#{backend_path}public/#{media_name}").crop(params.w, params.h, params.x, params.y).resize('200', '150').write "#{backend_path}public/#{resized_name}", (err) ->
+        imageMagick("#{backend_path}public/#{media_name}").crop(params.w, params.h, params.x, params.y).write "#{backend_path}public/#{resized_name}", (err) ->
           if err
             console.log err
           else
             if params.mode is 'full'
               media.fullUrl        = "#{backend_url}/#{resized_name}"
               media.full_selection = JSON.stringify(params)
+              media.selection      = ''
             else
               media.thumbnailUrl = "#{backend_url}/#{resized_name}"
               media.selection    = JSON.stringify(params)
