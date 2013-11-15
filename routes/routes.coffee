@@ -592,9 +592,13 @@ file_callback = (file, callback) ->
 
     if result.indexOf('image') isnt -1
 
-      if file.originalFilename is 'blob' 
+      if file.originalFilename is 'blob'
         ext  = '.' + result.split('/')[1]
         name = makeid() + ext
+        fs.readFile file.path, ( err, data ) ->
+          console.log err
+          fs.writeFile "#{backend_path}public/#{name}", data, (err) ->
+            console.log err
       else
         ext  = file.originalFilename.split('.')
         ext  = '.' + ext[ext.length - 1]
@@ -642,14 +646,16 @@ file_callback = (file, callback) ->
                   true
                 else
                   false                
-                media.url          = "#{backend_url}/#{name}"
-                media.thumbnailUrl = "#{backend_url}/#{resized_name}"
-                media.deleteUrl    = "#{backend_url}/media/#{media._id}"
-                media.deleteType   = "DELETE"
-                media.selection    = JSON.stringify(params)
-                media.parent       = file.parent
-                media.type         = 'image'
-                media.updated      =  new Date
+                media.url             = "#{backend_url}/#{name}"
+                media.thumbnailUrl    = "#{backend_url}/#{resized_name}"
+                media.thumbnailUrl    = "#{backend_url}/#{name}"
+                media.deleteUrl       = "#{backend_url}/media/#{media._id}"
+                media.deleteType      = "DELETE"
+                media.selection       = JSON.stringify(params)
+                media.full_selection  = JSON.stringify(params)
+                media.parent          = file.parent
+                media.type            = 'image'
+                media.updated         =  new Date
                 console.log "resized #{name} to #{resized_name}, updated media #{media._id}"
                 media.save()
                 callback null, media
@@ -754,26 +760,38 @@ exports.resize_handler = (req, res) ->
     if err
       console.log err
     else
-      if params.x?
+      if params.mode?
         media_name   = media.url.split('/')
         media_name   = media_name[media_name.length - 1]
         ext          = media_name.split('.')
         ext          = '.'+ext[ext.length - 1]
-        resized_name = media_name.split(ext)[0] + '_thumb' + makeid() + ext
+        resized_name = if params.mode is 'thumb'
+          media_name.split(ext)[0] + '_thumb' + makeid() + ext
+        else
+          media_name
+
+        media_resized_callback = (media) ->
+          media.type         = 'image'
+          media.updated      = new Date
+          console.log "resized #{media_name} to #{resized_name}, updated media #{media._id}"
+          media.save()
+
+          res.header 'Content-Type', 'application/json'
+          res.send JSON.stringify(media)
 
         imageMagick("#{backend_path}public/#{media_name}").crop(params.w, params.h, params.x, params.y).resize('200', '150').write "#{backend_path}public/#{resized_name}", (err) ->
           if err
             console.log err
           else
-            media.thumbnailUrl = "#{backend_url}/#{resized_name}"
-            media.type         = 'image'
-            media.selection    = JSON.stringify(params)
-            media.updated      =  new Date
-            console.log "resized #{media_name} to #{resized_name}, updated media #{media._id}"
-            media.save()
+            if params.mode is 'full'
+              media.fullUrl        = "#{backend_url}/#{resized_name}"
+              media.full_selection = JSON.stringify(params)
+            else
+              media.thumbnailUrl = "#{backend_url}/#{resized_name}"
+              media.selection    = JSON.stringify(params)
 
-            res.header 'Content-Type', 'application/json'
-            res.send JSON.stringify(media)
+            media_resized_callback media
+
       else
         res.header 'Content-Type', 'application/json'
         res.send JSON.stringify(media)   

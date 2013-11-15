@@ -37,19 +37,21 @@ quiz_answerSchema = new mongoose.Schema
   correct:  Boolean
 
 mediaSchema = new mongoose.Schema
-  parent:       String
-  name:         String
-  size:         Number
-  url:          String
-  thumbnailUrl: String
-  deleteUrl:    String
-  deleteType:   String
-  type:         String
-  selection:    String
-  order:        Number
-  timestamp:    Number
-  cover:        Boolean
-  updated:      { type: Date, default: Date.now }
+  parent:         String
+  name:           String
+  size:           Number
+  url:            String
+  thumbnailUrl:   String
+  fullUrl:        String
+  deleteUrl:      String
+  deleteType:     String
+  type:           String
+  selection:      String
+  full_selection: String
+  order:          Number
+  timestamp:      Number
+  cover:          Boolean
+  updated:        { type: Date, default: Date.now }
 
 media_mappingSchema = new mongoose.Schema
   timestamp: Number
