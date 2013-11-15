@@ -761,7 +761,11 @@ exports.resize_handler = (req, res) ->
       console.log err
     else
       if params.mode? and params.x?
-        media_name   = media.url.split('/')
+        media_name   = if params.mode is 'full'
+          media.url
+        else
+          media.fullUrl || media.url
+        media_name   = media_name.split('/')
         media_name   = media_name[media_name.length - 1]
         ext          = media_name.split('.')
         ext          = '.'+ext[ext.length - 1]
@@ -773,8 +777,9 @@ exports.resize_handler = (req, res) ->
         media_resized_callback = (media) ->
           media.type         = 'image'
           media.updated      = new Date
-          console.log "resized #{media_name} to #{resized_name}, updated media #{media._id}"
           media.save()
+
+          console.log "resized #{media_name} to #{resized_name}, updated media #{media._id}"
 
           res.header 'Content-Type', 'application/json'
           res.send JSON.stringify(media)
