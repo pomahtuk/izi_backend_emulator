@@ -14,10 +14,10 @@ fs          = require 'fs'
 http        = require 'http'
 https       = require 'https'
 
-# backend_url  = "http://192.168.158.128:3000"
-backend_url  = "http://prototype.izi.travel"
-# backend_path = "./"
-backend_path = "/home/ubuntu/izi_backend_emulator/"
+backend_url  = "http://192.168.158.128:3000"
+# backend_url  = "http://prototype.izi.travel"
+backend_path = "./"
+# backend_path = "/home/ubuntu/izi_backend_emulator/"
 
 exports.certan_provider = (req, res) ->
   cp_id = req.params.cp_id
@@ -573,6 +573,23 @@ exports.delete_mapping = (req, res) ->
 
 # images manipulation
 
+extract_file_name = (path) ->
+  path   = path.split('/')
+  path   = path[path.length - 1]
+  path
+
+cleanup_media = (media, mode) ->
+  if mode is 'full'
+    if media.fullUrl isnt media.url
+      fs.unlink "#{backend_path}public/#{extract_file_name(media.fullUrl)}", (err) ->
+        console.log err if err
+        console.log 'deleted full'
+  else
+    if media.thumbnailUrl isnt media.url
+      fs.unlink "#{backend_path}public/#{extract_file_name(media.thumbnailUrl)}", (err) ->
+        console.log err if err
+        console.log 'deleted thumb'
+
 makeid = ->
   text = ""
   possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
@@ -582,6 +599,39 @@ makeid = ->
     text += possible.charAt(Math.floor(Math.random() * possible.length))
     i++
   text
+
+recreate_thumb = (media, callback) ->
+  name         = extract_file_name media.thumbnailUrl
+  path         = "#{backend_path}public/#{name}"
+  ext          = name.split('.')
+  ext          = '.'+ext[ext.length - 1]
+  resized_name = name.split(ext)[0] + makeid() + ext
+  imageMagick(path).size (err, size) ->
+    if err
+      callback err
+    else
+      width = 0
+      height = 0
+      if size.width >= size.height and size.width*0.75 >= size.height
+        width  = size.height / 0.75
+        height = size.height
+      else
+        width  = size.width
+        height = size.width * 0.75
+
+      params = 
+        x: 0
+        y: 0
+        x2: width
+        y2: height
+        width: width
+        height: height
+
+      imageMagick(path).crop(width, height, 0, 0).write "#{backend_path}public/#{resized_name}", (err) ->
+        if err
+          console.log err, 'recreate thumb'
+        else
+          callback() if callback?
 
 file_callback = (file, callback) ->
 
@@ -765,6 +815,7 @@ exports.resize_handler = (req, res) ->
           media.url
         else
           media.fullUrl || media.url
+        # media_name   = extract_file_name media_name
         media_name   = media_name.split('/')
         media_name   = media_name[media_name.length - 1]
         ext          = media_name.split('.')
@@ -774,15 +825,18 @@ exports.resize_handler = (req, res) ->
         else
           media_name.split(ext)[0] + makeid() + ext
 
+        cleanup_media(media, params.mode)
+
         media_resized_callback = (media) ->
-          media.type         = 'image'
-          media.updated      = new Date
-          media.save()
+          ->
+            media.type         = 'image'
+            media.updated      = new Date
+            media.save()
 
-          console.log "resized #{media_name} to #{resized_name}, updated media #{media._id}"
+            console.log "resized #{media_name} to #{resized_name}, updated media #{media._id}"
 
-          res.header 'Content-Type', 'application/json'
-          res.send JSON.stringify(media)
+            res.header 'Content-Type', 'application/json'
+            res.send JSON.stringify(media)
 
         imageMagick("#{backend_path}public/#{media_name}").crop(params.w, params.h, params.x, params.y).write "#{backend_path}public/#{resized_name}", (err) ->
           if err
@@ -792,15 +846,16 @@ exports.resize_handler = (req, res) ->
               media.fullUrl        = "#{backend_url}/#{resized_name}"
               media.full_selection = JSON.stringify(params)
               media.selection      = ''
+              recreate_thumb media, media_resized_callback(media).bind(@)
             else
               media.thumbnailUrl = "#{backend_url}/#{resized_name}"
               media.selection    = JSON.stringify(params)
-
-            media_resized_callback media
+              media_resized_callback(media)()
 
       else
         res.header 'Content-Type', 'application/json'
         res.send JSON.stringify(media)   
+
 
 exports.imagedata = (req, res) ->
   # If a URL and callback parameters are present 
