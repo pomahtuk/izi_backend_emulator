@@ -582,15 +582,17 @@ extract_file_name = (path) ->
 
 cleanup_media = (media, mode) ->
   if mode is 'full'
-    if media.fullUrl isnt media.url
-      fs.unlink "#{backend_path}public/#{extract_file_name(media.fullUrl)}", (err) ->
-        console.log err if err
-        console.log 'deleted full'
+    if media.fullUrl?
+      if media.fullUrl isnt media.url
+        fs.unlink "#{backend_path}public/#{extract_file_name(media.fullUrl)}", (err) ->
+          console.log err if err
+          console.log 'deleted full'
   else
-    if media.thumbnailUrl isnt media.url
-      fs.unlink "#{backend_path}public/#{extract_file_name(media.thumbnailUrl)}", (err) ->
-        console.log err if err
-        console.log 'deleted thumb'
+    if media.thumbnailUrl?
+      if media.thumbnailUrl isnt media.url
+        fs.unlink "#{backend_path}public/#{extract_file_name(media.thumbnailUrl)}", (err) ->
+          console.log err if err
+          console.log 'deleted thumb'
 
 makeid = ->
   text = ""
