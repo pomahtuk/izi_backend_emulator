@@ -509,6 +509,7 @@ exports.certan_media = (req, res) ->
 
 exports.create_media = (req, res) ->
   media = new models.Media(req.body)
+  media.fullUrl = media.url
   media.save()
   console.log "Saved media " + media._id
   res.header 'Content-Type', 'application/json'
@@ -856,7 +857,6 @@ exports.resize_handler = (req, res) ->
       else
         res.header 'Content-Type', 'application/json'
         res.send JSON.stringify(media)   
-
 
 exports.imagedata = (req, res) ->
   # If a URL and callback parameters are present 
