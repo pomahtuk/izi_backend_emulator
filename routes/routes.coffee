@@ -535,7 +535,8 @@ exports.delete_media = (req, res) ->
     if media?
       media.remove media
       console.log "Deleted media " + media._id
-      res.send media._id
+      res.header 'Content-Type', 'application/json'
+      res.send JSON.stringify(media)
     else
       res.send 'nope'
 
