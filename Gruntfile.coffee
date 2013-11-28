@@ -15,15 +15,15 @@ module.exports = (grunt) ->
     watch:
       scripts:
         files: 'public/**/*.coffee'
-        tasks: ['coffee', 'reload']    
+        tasks: ['coffee']    
       templates:
         files: '**/*.slim'
-        tasks: ['slim', 'reload']
+        tasks: ['slim']
       styles:
         files: '**/*.sass'
-        tasks: ['compass', 'reload']
+        tasks: ['compass']
       express:
-        files:  [ 'app.coffee', 'routes/*.coffee', 'models/.coffee' ],
+        files:  [ 'app.coffee', 'routes/*.coffee', 'models/*.coffee' ],
         tasks:  [ 'nodemon' ]
         options:
           spawn: false  # Without this option specified express won't be reloaded
@@ -47,17 +47,9 @@ module.exports = (grunt) ->
         options:
           file: "app.coffee"
 
-    reload:
-      port: 35729
-      liveReload: true
-      # iframe:
-      #   target: '192.168.158.128'
-      # proxy:
-      #   host: '192.168.158.128'
-
     concurrent:
       first:
-        tasks: ['reload', 'coffee', 'compass', 'slim']
+        tasks: ['coffee', 'compass', 'slim']
         options:
           logConcurrentOutput: true
       second:
@@ -73,11 +65,8 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-compass'
   grunt.loadNpmTasks 'grunt-nodemon'
   grunt.loadNpmTasks 'grunt-concurrent'
-  grunt.loadNpmTasks 'grunt-reload'
 
   # Default task.
-  # grunt.registerTask 'default', ['coffee', 'slim', 'compass', 'nodemon', 'watch']
-
   grunt.registerTask 'default', [
     'concurrent:first',
     'concurrent:second'
