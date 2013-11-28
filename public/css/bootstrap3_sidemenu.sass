@@ -1,0 +1,36 @@
+.bs-sidebar.affix
+  position: static
+
+.bs-sidenav
+  margin-top: 30px
+  margin-bottom: 30px
+  padding-top: 10px
+  padding-bottom: 10px
+  text-shadow: 0 1px 0 #fff
+  background-color: #f7f5fa
+  border-radius: 5px
+
+.bs-sidebar .nav
+  >
+    li > a
+      display: block
+      color: #716b7a
+      padding: 5px 20px
+      &:hover, &:focus
+        text-decoration: none
+        background-color: #e5e3e9
+        border-right: 1px solid #dbd8e0
+    .active
+      > a, &:hover > a, &:focus > a
+        font-weight: bold
+        color: #563d7c
+        background-color: transparent
+        border-right: 1px solid #563d7c
+  .nav
+    display: none
+    margin-bottom: 8px
+    > li > a
+      padding-top: 3px
+      padding-bottom: 3px
+      padding-left: 30px
+      font-size: 90%

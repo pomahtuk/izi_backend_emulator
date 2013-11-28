@@ -1,15 +1,14 @@
-fs            = require 'fs'
+fs = require 'fs'
 
 exports.index = (req, res) ->
-  res.render "index",
-    title: "Test web page on node.js using Express and Mongoose"
-    pagetitle: "Hello there"
-    user: req.user
+  index = fs.readFileSync "#{__dirname}/../views/index.html", "utf-8"
+  res.send index
 
 exports.partials = (req, res) ->
   console.log 'partials'
-  name = req.params.name
-  res.render 'partials/' + name
+  name    = req.params.name
+  partial = fs.readFileSync "#{__dirname}/../partials/#{name}", "utf-8"
+  res.send partial
 
 exports.templates = (req, res) ->
   console.log req.params

@@ -14,10 +14,10 @@ fs          = require 'fs'
 http        = require 'http'
 https       = require 'https'
 
-# backend_url  = "http://192.168.158.128:3000"
-backend_url  = "http://prototype.izi.travel"
-# backend_path = "./"
-backend_path = "/home/ubuntu/izi_backend_emulator/"
+backend_url  = "http://192.168.158.128:3000"
+# backend_url  = "http://prototype.izi.travel"
+backend_path = "./"
+# backend_path = "/home/ubuntu/izi_backend_emulator/"
 
 exports.certan_provider = (req, res) ->
   cp_id = req.params.cp_id
@@ -488,6 +488,17 @@ exports.delete_story_set = (req, res) ->
 
     # res.send "OK"
 
+exports.update_story_set_numbers = (req, res) ->
+  new_indexes = req.body
+  models.StorySet.find { 'parent': req.params.parent_id }, (err, story_set_arr) ->
+    if err
+      console.log err
+    else
+      for story_set, index in story_set_arr
+        story_set.number = new_indexes[story_set._id]
+        story_set.save()
+      res.send 'ok'
+
 # media
 
 exports.media_list = (req, res) ->
@@ -584,13 +595,13 @@ cleanup_media = (media, mode) ->
   if mode is 'full'
     if media.fullUrl?
       if media.fullUrl isnt media.url
-        fs.unlink "#{backend_path}public/#{extract_file_name(media.fullUrl)}", (err) ->
+        fs.unlink "#{backend_path}public/uploads/#{extract_file_name(media.fullUrl)}", (err) ->
           console.log err if err
           console.log 'deleted full'
   else
     if media.thumbnailUrl?
       if media.thumbnailUrl isnt media.url
-        fs.unlink "#{backend_path}public/#{extract_file_name(media.thumbnailUrl)}", (err) ->
+        fs.unlink "#{backend_path}public/uploads/#{extract_file_name(media.thumbnailUrl)}", (err) ->
           console.log err if err
           console.log 'deleted thumb'
 
@@ -606,7 +617,7 @@ makeid = ->
 
 recreate_thumb = (media, callback) ->
   name         = extract_file_name media.thumbnailUrl
-  path         = "#{backend_path}public/#{name}"
+  path         = "#{backend_path}public/uploads/#{name}"
   ext          = name.split('.')
   ext          = '.'+ext[ext.length - 1]
   resized_name = name.split(ext)[0] + makeid() + ext
@@ -631,7 +642,7 @@ recreate_thumb = (media, callback) ->
         width: width
         height: height
 
-      imageMagick(path).crop(width, height, 0, 0).write "#{backend_path}public/#{resized_name}", (err) ->
+      imageMagick(path).crop(width, height, 0, 0).write "#{backend_path}public/uploads/#{resized_name}", (err) ->
         if err
           console.log err, 'recreate thumb'
         else
@@ -651,7 +662,7 @@ file_callback = (file, callback) ->
         name = makeid() + ext
         fs.readFile file.path, ( err, data ) ->
           console.log err
-          fs.writeFile "#{backend_path}public/#{name}", data, (err) ->
+          fs.writeFile "#{backend_path}public/uploads/#{name}", data, (err) ->
             console.log err
       else
         ext  = file.originalFilename.split('.')
@@ -682,7 +693,7 @@ file_callback = (file, callback) ->
             width: width
             height: height
 
-          imageMagick(file.path).crop(width, height, 0, 0).write "#{backend_path}public/#{resized_name}", (err) ->
+          imageMagick(file.path).crop(width, height, 0, 0).write "#{backend_path}public/uploads/#{resized_name}", (err) ->
             if err
               console.log err
               callback err
@@ -700,9 +711,9 @@ file_callback = (file, callback) ->
                   true
                 else
                   false                
-                media.url             = "#{backend_url}/#{name}"
-                media.thumbnailUrl    = "#{backend_url}/#{resized_name}"
-                media.thumbnailUrl    = "#{backend_url}/#{name}"
+                media.url             = "#{backend_url}/uploads/#{name}"
+                media.thumbnailUrl    = "#{backend_url}/uploads/#{resized_name}"
+                media.thumbnailUrl    = "#{backend_url}/uploads/#{name}"
                 media.deleteUrl       = "#{backend_url}/media/#{media._id}"
                 media.deleteType      = "DELETE"
                 media.selection       = JSON.stringify(params)
@@ -732,13 +743,13 @@ file_callback = (file, callback) ->
         else
           file.originalFilename
 
-        proc = new ffmpeg({source:file.path}).withAudioCodec('libvorbis').toFormat('ogg').saveToFile "#{backend_path}public/#{converted}", (retcode, error) ->
+        proc = new ffmpeg({source:file.path}).withAudioCodec('libvorbis').toFormat('ogg').saveToFile "#{backend_path}public/uploads/#{converted}", (retcode, error) ->
           if error
             console.log error
           media.name         = client_name
           media.size         = 100
-          media.url          = "#{backend_url}/#{name}"
-          media.thumbnailUrl = "#{backend_url}/#{converted}"
+          media.url          = "#{backend_url}/uploads/#{name}"
+          media.thumbnailUrl = "#{backend_url}/uploads/#{converted}"
           media.deleteUrl    = "#{backend_url}/media/#{media._id}"
           media.deleteType   = "DELETE"
           media.parent       = file.parent
@@ -772,13 +783,13 @@ file_callback = (file, callback) ->
         proc.toFormat('m4v')
         proc.withAspect('4:3')
         proc.withSize('640x360')
-        proc.saveToFile "./public/#{converted}", (retcode, error) ->
+        proc.saveToFile "./public/uploads/#{converted}", (retcode, error) ->
           console.log retcode
           if error
             console.log error
           media.name         = file.originalFilename.substr(0, 20) + '...'
           media.size         = 100
-          media.url          = "#{backend_url}/#{converted}"
+          media.url          = "#{backend_url}/uploads/#{converted}"
           media.thumbnailUrl = "#{backend_url}/video_thumbs/#{name}/#{thumb}"
           media.deleteUrl    = "#{backend_url}/media/#{media._id}"
           media.deleteType   = "DELETE"
@@ -842,17 +853,17 @@ exports.resize_handler = (req, res) ->
             res.header 'Content-Type', 'application/json'
             res.send JSON.stringify(media)
 
-        imageMagick("#{backend_path}public/#{media_name}").crop(params.w, params.h, params.x, params.y).write "#{backend_path}public/#{resized_name}", (err) ->
+        imageMagick("#{backend_path}public/uploads/#{media_name}").crop(params.w, params.h, params.x, params.y).write "#{backend_path}public/uploads/#{resized_name}", (err) ->
           if err
             console.log err
           else
             if params.mode is 'full'
-              media.fullUrl        = "#{backend_url}/#{resized_name}"
+              media.fullUrl        = "#{backend_url}/uploads/#{resized_name}"
               media.full_selection = JSON.stringify(params)
               media.selection      = ''
               recreate_thumb media, media_resized_callback(media).bind(@)
             else
-              media.thumbnailUrl = "#{backend_url}/#{resized_name}"
+              media.thumbnailUrl = "#{backend_url}/uploads/#{resized_name}"
               media.selection    = JSON.stringify(params)
               media_resized_callback(media)()
 

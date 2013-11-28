@@ -12,7 +12,7 @@ story_setSchema = new mongoose.Schema
   language:         String
   parent:           { type : mongoose.Schema.ObjectId, ref : 'story_set' }
   name:             String
-  number:           Number
+  number:           String
 
 storySchema = new mongoose.Schema
   playback_algorithm: String

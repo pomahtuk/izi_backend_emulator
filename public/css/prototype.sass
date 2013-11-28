@@ -1,0 +1,2319 @@
+@import "compass"
+@import 'compass/reset'
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video
+  vertical-align: middle
+
+$unmain_color: #999999
+
+$exhibitBackgroundColor: #f7f7f7
+$exhibitTextColor: #4b4b4b
+$exhibitTextColorHover: #fd6e3b
+
+$slideDownTextColor: #242424
+$slideDownTextColorHover: #fd6e3b
+$slideDownTextColorMenu: #7d7d7d
+$slideDownHeight: 550px
+$slideDownOuterBorderColor: #bbbcbc
+$slideDownDescriptionMarginTop: 60px
+$slideDownDescriptionMarginBottom: 60px
+
+$headerColor: #686e6e
+$contrastColor: #f7f7f7
+$textColor: #666
+
+$border_color: #e7e7e7
+$hover_color: #FB6E02
+$unmain_text_color: #cccccc
+
+$dark_gray_color: #777777
+
+$conflictColor: #b94a48
+$noConflictColor: #444
+
+.status-select-dropdown
+  padding: 10px
+  width: 270px
+
+  .status-select
+    padding: 0.5em 1em 0em 1em
+
+    .required-symbol
+      display: none
+
+    .control-label
+      font-weight: normal
+
+  li
+    cursor: pointer
+
+  .other_list
+    padding-left: 10px
+
+  ul.other
+    list-style: none
+    text-align: left
+    padding: 0px
+    margin: 5px 0px 0px 0px
+    span
+      padding: 0px
+
+    li
+      cursor: auto
+
+.conflict-icon
+  &.entypo-icon
+    color: $conflictColor
+
+  &.caret
+    border-top-color: $conflictColor
+    border-bottom-color: $conflictColor
+
+.status-select
+  >div
+    +inline-block
+    width: 230px
+
+
+  input
+    display: none
+
+  .conflict,.conflict-text
+    color: $conflictColor
+
+  .conflict-text
+    white-space: normal !important
+
+  .required-symbol
+    display: inline
+
+  label
+    font-weight: normal
+    cursor: pointer
+    &.radio
+      +inline-block
+      vertical-align: top
+      padding: 2px 0px 0px 0px !important
+
+    .label-content
+      display: inline-block
+      padding-top: 2px
+
+  .limited-pass-hint
+    display: inline-block
+
+    .limited-pass
+      display: inline
+      font-weight: bold
+      padding: 0em 0.5em
+
+.status-select-index
+  top: 14px !important
+  display: inline-block !important
+
+  .conflict-icon
+    color: $noConflictColor
+
+  .caret
+    border-top-color: $noConflictColor
+    border-bottom-color: $noConflictColor
+
+  button
+    .caret
+      visibility: hidden
+
+  button:not(:hover)
+    background: white
+    border-color: white
+    box-shadow: none
+    text-shadow: none !important
+
+  button:hover
+    .caret
+      visibility: visible
+
+  &.open
+    button
+      border-color: white
+      .caret
+        visibility: visible
+
+  ul
+    width: 500px
+    margin-top: -8px
+    margin-left: -403px
+
+body
+  background: #e5e5e5
+  text-rendering: optimizeLegibility
+  -webkit-font-smoothing: antialiased  
+
+.navigation
+  z-index: 1000
+  top: 0
+
+  &.bottom-padding
+    padding-bottom: 45px
+
+html, body
+  width: 100%
+
+body
+  color: #222
+  // font-family: Arial, sans-serif
+  font-family: 'Roboto', sans-serif
+  font-size: 13px
+  line-height: 1.5em
+
+.museum_navigation_menu
+  background: #222222
+  color: white
+  padding: 30px 30px
+  z-index: 1001
+  position: relative
+  max-height: 440px
+  overflow: auto
+  overflow-y: hidden
+  display: none
+
+  .museum_navbar
+    margin-bottom: 15px
+
+    i
+      margin-right: 10px
+
+    .navbar-right
+      margin-top: -25px
+
+    a
+      color: inherit
+      &.top_nav
+        margin-right: 40px
+      .caret
+        border-top: 4px solid white
+
+    .searches
+      +inline-block
+      height: 34px
+
+      .search_input
+        /*display: none*/
+        margin-right: 18px
+        position: relative
+
+        input
+          width: 92px
+          max-width: 300px
+
+        .search_reset
+          position: absolute
+          top: 8px
+          right: 5px
+          font-size: 18px
+          color: #222
+
+          &:hover
+            text-decoration: none
+
+      .search
+        +border-radius(4px)
+        height: 34px
+        line-height: 34px
+        cursor: pointer
+        margin-right: 30px
+
+        &:hover
+          border: 1px solid 1px solid rgb(102, 102, 102)
+          padding: 0px 12px
+          background: #555555
+          color: whiteFFF
+          margin-right: 18px
+
+          a
+            margin-right: 0px
+            text-decoration: none
+
+  .dropdown
+    +inline-block
+    .dropdown-menu
+      color: #222
+
+  .museum_filters
+    width: 80px
+    float: left
+    margin: 10px 20px 0px 0px
+    text-align: center
+    display: none
+
+    a
+      display: block
+      font-size: 50px
+      color: inherit
+      padding: 20px 0px
+
+      &:hover, &.active
+        text-decoration: none
+        color: $hover_color
+
+  .museum_list
+    list-style: none
+    margin: 0px 0px 0px 20px
+    padding: 0px
+    float: left
+    max-height: 340px
+    overflow: auto
+    width: -webkit-calc(100% - 160px)
+    width: -moz-calc(100% - 160px)
+    width: calc(100% - 160px)
+
+    > li
+      +inline-block
+      width: 140px
+      margin: 15px 10px 0 0
+
+      a
+        display: block
+        color: inherit
+        padding: 0px 0px 2px 0px
+        border-bottom: 3px solid transparent
+        position: relative
+
+        &:hover
+          text-decoration: none
+          background: #2C2C2C
+
+        &.active
+          background: rgba(0,0,0, 0.7)
+          border-bottom: 3px solid $hover_color
+
+        &:hover, &.active
+          .package_status.generated
+            display: block
+
+        .package_status
+          +border-radius(21px)
+          display: block
+          position: absolute
+          top: 73px
+          left: 5px
+          line-height: 0px
+          height: 21px
+          width: 21px
+          color: #13B013
+          background: white
+          font-size: 26px
+
+          i
+            +inline-block
+            margin-top: 3.5px
+            margin-left: 4px
+            font-size: 14px
+
+          &.generated
+            display: none
+
+          &.process
+            color: white
+            background: #51B9F4
+            font-size: 14px
+
+            i
+              margin: 4px 4px
+
+        h4
+          +inline-block
+          margin: 0px
+          padding: 5px
+          font-size: 14px
+          line-height: 20px
+          max-height: 50px
+          overflow: hidden
+
+          span
+            color: $dark_gray_color
+
+      img
+        width: 140px
+        height: 100px
+
+.museum_edit
+  display: none
+
+.museum_edit_opener
+  +box-shadow(#666, 0px 1px)
+  +border-bottom-radius(3px)
+  margin-bottom: -24px
+  position: absolute
+  height: 24px
+  z-index: 1000
+  background: $dark_gray_color
+  color: white
+  width: 160px
+  text-align: center
+  line-height: 24px
+  left: 50%
+  margin-left: -80px
+  cursor: pointer
+  z-index: 999
+
+  i
+    font-size: 12px
+
+.navbar
+  margin-bottom: 0px
+  background: #fff
+  border-color: #e5e5e5
+  z-index: 5
+  height: 65px
+  padding-top: 7px
+  +border-radius(0px)
+   
+.left_content
+  padding-left: 20px
+
+  .cms_text_logo
+    display: block
+    float: left
+    height: 50px
+    padding: 0px 15px 0px 5px
+    line-height: 50px
+    margin-right: 15px
+    border-right: 1px solid $unmain_text_color
+    color: $dark_gray_color
+    font-size: 25px
+    font-weight: bold
+
+  .menu_opener
+    display: block
+    float: left
+    margin: 10px 18px 0px 0px
+    height: 32px
+    width: 32px
+    background: white
+    color: #666
+    font-size: 21px
+    text-align: center
+
+    i
+      line-height: 30px
+      font-weight: bold
+      font-size: 28px
+
+    &:hover
+      text-decoration: none
+
+  .museum_title
+    float: left
+    font-size: 24px
+    margin: 0px 20px 0px -5px
+    padding: 0px 5px
+    position: relative
+    color: #333333
+    height: 30px
+    line-height: 30px
+    top: 10px
+    cursor: pointer
+
+    &:hover
+      background: #eee
+
+    &:after
+      display: block
+      position: absolute
+      height: 30px
+      width: 1px
+      content: ''
+      right: -5px
+      top: 0px
+      background: #c0c0c0
+
+
+    &.opened:before
+      display: block
+      position: absolute
+      height: 15px
+      width: 33px
+      content: ''
+      left: 50%
+      margin-left: -10px
+      bottom: -17px
+      background: url('/img/pop-in-arrow.png')
+
+  .lang 
+    &.open a
+      +box-shadow(none)
+
+    & > a
+      font-size: 24px
+      margin-right: 20px
+      padding-left: 0px
+      color: #333333
+
+      &:hover
+        background: #eee
+        padding: 0 0 0 5px
+        margin-left: -5px
+
+      i
+        +inline-block
+        color: #888888
+        margin-top: -4px
+        font-size: 14px
+        padding: 0 5px 0 0
+
+  .top_space
+    margin-top: 8px
+
+.right_content
+  +inline-block
+  position: absolute
+  top: 0px
+  right: 20px
+  text-align: right
+
+  .hider
+    +inline-block
+    // margin-top: -15px
+
+  .autosaved_info
+    float: left
+    color: $unmain_color
+    line-height: 50px
+    margin-right: 10px
+
+  // .icon-globe
+  //   padding: 0px 10px 0px 5px
+  //   font-size: 20px
+
+  .dropdown-toggle
+    max-height: 34px
+
+  .dropdown-menu
+    text-align: left
+
+  .item_publish_settings
+    position: relative
+    top: 14px
+
+    button
+      min-height: 35px
+
+    .extra
+      margin-right: 5px
+
+  // .help_opener
+  //   font-size: 20px
+
+.spacer
+  margin-right: 10px
+
+.extra
+  float: left
+
+.extra_right
+  float: right
+  margin-left: 5px
+
+.undo, .redo, .prev, .next
+  font-size: 25px
+  height: 34px
+  padding: 0px 5px
+
+.prev, .next
+  padding: 0px 10px
+  font-size: 18px
+
+.filters_bar
+  +box-shadow( rgba(0, 0, 0, .1)  0 2px 4px )
+  border-top: 1px solid #ccc
+  a
+    color: #777
+
+    &:hover
+      color: #333
+
+  .btn-group
+    button
+      font-size: 14px
+      padding: 3px 10px 4px 10px
+
+.actions_bar, .filters_bar
+  position: relative
+  background: #f1f1f1
+  // padding-top: 4px
+  height: 44px
+  // border-bottom: 1px solid #d9d9d9
+  z-index: 3
+
+  input.search
+    +inline-block
+    width: 150px
+    margin-right: 10px
+    max-width: 500px
+
+  .right_content
+    top: 5px
+
+  .error_notifications
+    position: absolute
+    top: 6px
+    left: 50%
+    margin-left: -250px
+    width: 500px
+    z-index: 1000
+    height: 31px
+
+    .alert
+      padding: 5px 15px
+      position: absolute
+      top: 0px
+      left: 0px
+      width: 100%
+
+.actions_bar
+  padding-left: 5px
+
+  .right_content
+    padding-top: 2px
+
+  .left_content
+    text-align: center
+
+  .left_buttons
+    display: inline-block
+    float: left
+    margin-top: 7px
+
+.lang_list 
+  display: none
+  height: 44px
+  margin-left: -320px
+
+  & > li
+    height: 44px
+
+    & > a
+      line-height: 37px !important
+      max-height: 41px
+
+  .open
+    border-color: transparent !important
+
+    & > a
+      background: transparent !important
+      border-color: transparent !important
+
+    > ul > li
+      border: none
+      text-align: left
+
+.filters_bar
+  text-align: right
+  padding: 0px 40px
+  line-height: 38px
+  position: relative
+  top: -44px
+  z-index: 2
+  // display: none
+
+  .clear_fiters
+    color: $slideDownTextColorHover
+
+  .dropdown
+    +inline-block
+    text-align: left
+
+    #visibility_filter
+      color: inherit
+
+    .dropdown-menu
+      top: 30px
+
+.float_menu 
+  height: 44px
+
+  .lang_switch
+    display: none
+
+  &.navbar-fixed-top
+    .actions_bar, .filters_bar
+      background: #fff
+
+    .lang_list
+      +inline-block
+
+
+.page-wrapper
+  -webkit-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  -o-user-select: none
+  user-select: none 
+
+ul.exhibits
+  margin: 30px 0 90px
+  text-align: justify
+  padding: 0px
+
+  &.sublevel
+    margin: 0px
+    padding: 0px
+
+  > li
+    +inline-block
+    position: relative
+    vertical-align: top
+
+  .exhibit
+    +inline-block
+    margin: 0 20px
+    padding-bottom: 30px
+    position: relative
+    vertical-align: top
+
+    .image
+      +border-top-radius(3px)
+      width: 200px
+      overflow-x: hidden
+
+    img
+      background: #f7f7f7
+      border-radius: 3px 3px 0 0
+      display: block
+      height: 150px
+      width: 200px
+      cursor: pointer
+
+    .description
+      background: #fff
+      border-color: #fff
+      border-radius: 0 0 2px 2px
+      border-style: solid
+      border-width: 0 1px 1px
+      box-shadow: #ccc 0px 1px 2px
+      padding: 10px
+      height: 80px
+      position: relative
+      cursor: pointer
+
+      h4
+        color: $exhibitTextColor
+        font-size: 14px
+        max-height: 32px
+        line-height: 16px
+        margin: 0px
+        overflow: hidden
+        cursor: pointer
+
+      .extra_info
+        color: $unmain_text_color
+        position: absolute
+        bottom: 5px
+        left: 10px
+
+    >.opener
+      +border-radius(3px)
+      position: relative
+      text-align: left
+      display: block
+      text-decoration: none
+      width: 200px
+      +box-sizing(border-box)
+
+      .checkbox
+        +border-top-left-radius(2px)
+        position: absolute
+        margin: -1px
+        height: 15px
+        width: 15px
+        top: 0px
+        left: 0px
+        background: $slideDownTextColorHover
+        display: none
+
+        input
+          cursor: pointer
+          position: relative
+          top: -1px
+          left: 3px
+
+      .visibility
+        bottom: 12px
+        right: 14px
+        position: absolute
+
+        i 
+          font-size: 18px
+          font-style: normal
+          color: #aaa
+
+        .on_hover
+          display: none
+
+          .btn
+            +box-sizing(border-box)
+            padding: 6px 8px
+
+          .dropdown-toggle
+            max-height: 34px
+
+          .dropdown-menu 
+            padding: 10px
+            min-width: 275px
+
+            li
+              cursor: pointer
+
+            li a 
+              position: relative
+              display: block
+              height: 25px
+
+            i
+              font-size: 16px
+              line-height: 20px
+              margin-right: 5px
+              color: #222
+
+          .extra
+            float: left
+            margin-right: 5px
+
+        &.invalid
+          i.placeholder, .on_hover .extra_right i
+            color: #d9534f
+
+      &.border
+        +box-shadow($exhibitTextColorHover 0 0 1px 2px)
+        .checkbox
+          display: block
+
+    &.active
+      background: url('../img/pop-in-arrow.png') no-repeat center bottom
+      padding-bottom: 30px
+      z-index: 2
+
+    &:hover,
+    &.active
+      .opener
+        +box-shadow($exhibitTextColorHover 0 0 1px 2px)
+      .checkbox
+        display: block
+        z-index: 3
+
+      .opener:not(.draft):not(.dummy)
+        .description 
+          h4
+            color: $exhibitTextColorHover
+
+    &:hover
+      .opener:not(.draft):not(.dummy)
+        // .description
+        //   background-image: url('../img/tile-shadow.png')
+        //   background-repeat: no-repeat
+
+        .visibility
+          bottom: 5px
+          right: 5px
+
+          i.placeholder
+            display: none
+          .on_hover
+            display: block
+
+    .opas_invisible, .passcode
+      // +opacity(0.5)
+      .description h4
+        color: #000
+
+    .dummy, .draft
+      position: relative
+      cursor: pointer
+      +opacity(0.5)
+      // +filter(blur(3px) grayscale(0.5))
+      // filter: url(blur.svg#blur) /* FF, IE10 & Opera */
+
+      .description h4
+        font-style: italic
+        // color: $dark_gray_color
+        color: #000
+
+      .visibility
+        display: none
+
+    .museum_passcode
+      &.published
+        // +opacity(0.5)
+        position: relative
+
+        &:after
+          +border-radius(60px)
+          background: #fff        
+          font-family: FontAwesome
+          content: "\f023"
+          color: #fb8521
+          font-size: 50px
+          line-height: 60px
+          text-align: center
+          display: block
+          position: absolute
+          top: 47px
+          left: 70px
+          width: 60px
+          height: 60px
+
+    .museum_opas_invisible
+      &.published, &.passcode
+        // +opacity(0.5)
+        position: relative
+
+        &:after
+          +border-radius(60px)
+          background: #fff
+          font-family: FontAwesome
+          content: "\f070"
+          color: #d2322d
+          font-size: 50px
+          line-height: 60px
+          text-align: center
+          display: block
+          position: absolute
+          top: 47px
+          left: 70px
+          width: 60px
+          height: 60px
+
+.in
+  #dropzone, #museum_dropzone
+    display: block !important
+
+.media_types
+  position: absolute
+  left: 15px
+  bottom: 12px
+
+  &.story
+    position: relative
+    bottom: auto
+
+  i
+    margin-right: 15px
+    font-size: 14px
+    color: $unmain_text_color
+
+    &.empty
+      display: none
+
+  &.invalid
+    i.empty
+      display: inline
+      color: #d9534f
+
+#drop_down, #museum_edit_dropdown
+  // background: #f8f8f8
+  background: #fff
+  border-top: 1px solid $slideDownOuterBorderColor
+  border-bottom: 1px solid $slideDownOuterBorderColor
+  // height: $slideDownHeight - 2 // minus border
+  margin: -1px 0 30px 0px
+  position: relative
+  width: 100%
+  z-index: 1
+
+  &.hidden
+    display: none
+
+  .museum_invalid_media
+    top: 15px
+    text-align: right
+
+  >.dropdown_area
+    position: absolute
+    top: 0px
+    left: 0px
+    height: 100%
+    width: 100%
+    background: rgba(0,0,0, .90)
+    z-index: 998
+    display: none
+
+    .wrapper
+      +box-sizing(border-box)
+      +border-radius(20px)
+      border: 3px dashed #fff
+      margin: 10px 68px
+      // height: $slideDownHeight - 20
+      height: calc(100% - 20px)
+      background: url('../img/draganddrop.png') no-repeat 20% center
+      position: relative
+
+      .progress
+        display: none
+        position: absolute
+        width: 80%
+        margin: 0px 10%
+        bottom: 20px
+
+      .text
+        margin-left: calc(20% + 200px)
+        margin-right: 20px
+        margin-top: -75px
+        top: 50%
+        position: relative
+        text-align: left
+        font-size: 50px
+        line-height: 60px
+        color: #fff
+        -webkit-touch-callout: none
+        -webkit-user-select: none
+        -khtml-user-select: none
+        -moz-user-select: none
+        -ms-user-select: none
+        user-select: none
+
+  >.prev-ex, >.next-ex
+    background: url('../img/popin-left-arrow.png') no-repeat
+    cursor: pointer
+    height: 75px
+    left: 0
+    position: absolute
+    top: 50%
+    margin-top: -35px
+    width: 60px
+    z-index: 998
+
+  >.next-ex
+    background-image: url('../img/popin-right-arrow.png')
+    left: inherit
+    right: 0
+
+  .images
+    position: relative
+
+    &.true
+      li
+        opacity: 0.5
+
+    .hovered
+      +box-sizing(border-box)
+      border: 2px solid $exhibitTextColorHover
+      overflow: hidden
+      opacity: 1 !important
+
+      img
+        margin-left: -2px
+        margin-top: -2px
+
+      .remove
+        margin-right: -2px
+        margin-top: -2px
+
+      .cover
+        left: 8px
+
+      .label_timestamp
+        left: 3px
+        background: $exhibitTextColorHover
+        color: #fff
+
+    .upload_item
+      width: 306px
+      .drag_here
+        margin-left: -3px
+        float: left
+        .img
+          width: 148px
+          height: 75px
+          background: url('../img/img_drag.png') no-repeat center
+        span
+          display: block
+          text-align: center
+          width: 148px
+      .or_upload
+        span
+          line-height: 112px
+          padding: 0px 0px
+        .upload_variants
+          float: right
+          width: 135px
+
+          span            
+            display: none
+
+          .error
+            border: 2px solid #b94a48
+            position: relative
+            
+            & + span
+              display: block
+              position: absolute
+              top: 66px
+              right: 0px
+              width: 120px
+              right: -120px
+              color: #b94a48
+              padding: 0px 0px 0px 5px
+              height: 30px
+              line-height: 30px
+
+          .upload
+            float: right
+            width: 100%
+            margin: 15px 0px
+            // margin-top: 40px
+
+  #fileupload, #museum_fileupload
+    display: none
+  
+  >.description
+    padding: 10px 10px
+    position: relative
+    text-align: left
+    min-height: 360px
+
+    #tabs_content
+      margin-top: 10px
+
+    .done_button
+      margin-right: 15px
+
+    .controls
+      position: absolute
+      right: 0px
+      top: 7px
+      +inline-block
+      text-align: right
+
+      .hider
+        +inline-block
+        margin-top: 5px
+
+      .close
+        background: url('../img/cross.png') center center no-repeat
+        cursor: pointer
+        height: 25px
+        +inline-block
+        width: 65px
+        float: none
+        +opacity(0.6)
+
+        &:hover
+          +opacity(1)
+
+      .delete_story
+        +inline-block
+        margin-right: 20px
+        color: #666666
+        font-size: 24px
+        margin-top: -3px
+
+        &:hover
+          color: #000
+          text-decoration: none
+
+    .nav-tabs
+      text-align: center
+
+      li
+        +inline-block
+        float: none
+        border-bottom: 3px solid transparent
+
+        &:hover, &.active
+          border-bottom: 3px solid #fb8521
+
+    .tab-content
+      padding-top: 10px
+
+    .tab-pane .tab-content
+      padding: 0
+
+    .form-group
+      margin: 0 0 10px 0
+
+    .control-label
+      text-align: right
+
+    .switch-toggle.ios
+      width: 200px
+      margin-bottom: 20px
+      margin-left: 20px
+
+      label
+        cursor: pointer
+
+    form.has_error
+      .form-control.ng-invalid, .form-control.number_invalid
+        border-color: #b94a48
+        +box-shadow(rgba(0, 0, 0, 0.075) 1px 1px 0 inset)
+        background: #F1E2E2
+
+        & + .error_text
+          +inline-block
+
+    .qr_image img
+      min-height: 280px
+
+    #qr_code img, #museum_qr_code img
+      height: 300px
+
+  &.loading .full
+    background: url('../img/ajax-loader.gif') no-repeat top center
+
+  .item_publish_settings
+    position: relative
+    top: -5px
+
+    text-align: left
+
+    .extra
+      margin-right: 5px
+
+  .label.label-danger
+    display: none
+    &.informer
+      display: block
+      position: absolute
+      right: 13px
+      top: 25px
+
+  &.invalid
+    .label.label-danger
+      display: block
+      position: absolute
+      right: 13px
+      top: 25px
+
+      &.images_label
+        top: 60px
+        left: 80px
+
+    // +box-sizing(border-box)
+    // border: 3px solid red
+
+
+#museum_edit_dropdown
+  margin-bottom: 0px
+
+.muted
+  color: #666
+
+textarea
+  resize: none
+
+.btn-warning
+  color: white
+  background-color: #fb8521
+  border-color: #fb8521
+
+  &.active
+    background-color: #fb8521
+
+.btn-success, .btn-success.active
+  background-color: #1aa1e1 !important
+  border-color: #1aa1e1 !important
+
+.check
+  +inline-block
+  margin-top: -5px
+  vertical-align: middle
+  width: 18px
+
+  i
+    font-size: 14px
+    color: #222
+
+.form-group
+  margin-bottom: 10px
+
+.popover-content, .popover
+  min-width: 400px
+  line-height: 1.44
+
+//
+// @import images
+.images-displayed, .images-hidden
+  padding-left: 30px
+
+.images
+  
+  .img_thumbnail, .img_thumbnail img
+    height: 112px
+    width: 148px
+    display: block
+
+  .img_thumbnail
+    position: relative
+
+  .delete_overlay
+    display: none
+    z-index: 999
+    +box-sizing(border-box)
+    position: absolute
+    top: 0px
+    left: 0px
+    width: 100%
+    height: 100%
+    background: rgba(0,0,0, 0.6)
+    // padding-top: 60px
+
+    .preloader
+      display: none
+      width: 100%
+      height: 100%
+      background: url('../img/medium_loader.gif') no-repeat center
+
+    span
+      // display: none
+      color: #fff
+      font-weight: bold
+      display: block
+      margin: 30px 0px 15px 0px
+      text-align: center
+
+    .overlay_controls
+      // display: none
+      margin: 0 auto
+      text-align: center
+
+      a
+        +inline-block
+        margin: 0px 3px
+
+  .museum_image_placeholder
+    display: none
+    img
+      height: 112px
+      width: auto
+      margin: 0 auto
+
+  a
+    text-decoration: none
+
+  img, .picture
+    z-index: 1
+
+  .remove, .delete_maping
+    color: white
+    font-size: 20px
+    font-weight: bold
+    line-height: 18px
+    position: absolute
+    right: 10px
+    text-shadow: #000 0 0 5px
+    top: 5px
+    z-index: 3
+
+    &:hover
+      color: #000
+      text-shadow: white 0 0 10px, white 0 0 5px
+
+  .delete_maping
+    color: #000000
+    text-shadow: none
+    line-height: 14px
+    top: 3px
+    right: 3px
+    pointer-events: auto
+
+  li
+    display: inline-block
+    margin: 5px
+    position: relative
+    vertical-align: top
+    width: 148px
+    height: 112px
+
+// GOOGLE bootstrap overrides
+
+.nav-tabs
+  border: none
+
+.nav-tabs > li > a
+  -webkit-border-radius: 2px 2px 0 0
+  -moz-border-radius: 2px 2px 0 0
+  border-radius: 2px 2px 0 0
+  color: #666
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover
+  font-weight: normal
+  color: #000
+  background: transparent
+  border: 1px solid transparent
+  cursor: pointer
+
+.nav-tabs > li.active > a:hover
+  background-color: #f8f8f8
+
+.nav-tabs> li 
+  margin: 0 1px 0 0
+
+.nav-tabs > li > a 
+  padding-top: 2px
+  padding-bottom: 6px
+  line-height: 20px
+  color: $dark_gray_color
+  border: 1px solid transparent
+  cursor: pointer
+
+.nav-tabs > li:hover > a
+  color: #000
+  background-color: #f8f8f8
+  border-color: #f8f8f8 #f8f8f8 #f8f8f8
+
+.nav-tabs > li > a:active 
+  color: #fb8521
+
+.nav-tabs li:hover
+  border-bottom: 3px solid #fb8521
+
+.nav-tabs li.active 
+  border-bottom: 3px solid #fb8521
+
+.nav-list > li > a
+  padding: 7px 15px
+  color: #777777
+
+.nav-list > li > a:hover
+  background-color: #eeeeee
+
+.nav-list > .active > a,
+.nav-list > .active > a:hover 
+  padding-left: 12px
+  // font-weight: bold
+  color: #dd4b39
+  // color: black
+  text-shadow: none
+  background-color: transparent
+  border-left: 3px solid #dd4b39
+
+.nav-list > .active > a:hover
+  background-color: #eeeeee
+
+.modal.fade .modal-dialog
+  -webkit-transform: translate(50%, -25%)
+  -ms-transform: translate(50%, -25%)
+  transform: translate(50% -25%)
+  -webkit-transition: -webkit-transform 0.3s ease-out
+  -moz-transition: -moz-transform 0.3s ease-out
+  -o-transition: -o-transform 0.3s ease-out
+  transition: transform 0.3s ease-out
+  top: 50%
+  position: absolute
+
+.modal-backdrop, .modal-backdrop.fade.in
+  opacity: 0.8
+  filter: alpha(opacity=80)
+
+.tab-content
+  padding-top: 20px
+
+.modal.in .modal-dialog
+  -webkit-transform: translate(-50%, -50%)
+  -ms-transform: translate(-50%, -50%)
+  transform: translate(-50%, -50%)
+  top: 50%
+  position: absolute
+
+.modal
+  display: block
+
+label
+  font-weight: normal
+
+.modal-dialog#delete_story, #dummyModal, #delete_museum_story
+  width: 350px
+  .btn
+    margin-left: 5px
+  .modal-body
+    padding-bottom: 0px
+    label
+      font-weight: normal
+      text-align: left
+      padding: 0px 0px 0px 20px
+      line-height: 34px
+      color: #222
+      cursor: pointer
+
+      input
+        margin-right: 5px
+        vertical-align: center
+        position: relative
+        top: 2px
+    .other_variants
+      margin-left: 20px
+      /*display: none*/
+
+    .password
+      label
+        font-size: 12px
+        padding-left: 0px
+      input
+        width: 100%
+
+  &#delete_museum_story
+    min-width: 525px
+
+#ngProgress
+  margin: 0
+  padding: 0
+  z-index: 99998
+  background-color: green
+  color: green
+  box-shadow: 0 0 10px 0
+  height: 2px
+  opacity: 0
+
+  +transition(all 0.5s ease-in-out)
+
+  // -webkit-transition: all 0.5s ease-in-out
+  // -moz-transition: all 0.5s ease-in-out
+  // -o-transition: all 0.5s ease-in-out
+  // transition: all 0.5s ease-in-out
+
+#ngProgress-container
+  position: fixed
+  margin: 0
+  padding: 0
+  top: 0
+  left: 0
+  right: 0
+  z-index: 99999
+
+.control-label
+  font-weight: bold
+  color: #999
+
+a
+  color: #222
+  font-size: 14px
+
+  &:hover
+    text-decoration: none
+    color: #fd6e3b
+
+.dropdown-menu > li > a:hover
+  color: #fff !important
+  background: #fd6e3b
+  cursor: pointer
+
+.form-control:focus
+  +box-shadow(none)
+  border-color: #fd6e3b
+  outline: 0
+
+.btn-success
+  color: #ffffff
+  background-color: #35AA47
+  border-color: #35AA47
+
+
+.progress-text
+  position: absolute
+
+.dropdown-submenu
+  position: relative
+
+.dropdown-submenu>.dropdown-menu
+  +border-radius(0 6px 6px 6px)
+  top: 0
+  left: 100%
+  margin-top: -6px
+  margin-left: -1px
+
+.dropdown-submenu:hover>.dropdown-menu
+  display: block
+
+.dropup .dropdown-submenu>.dropdown-menu
+  +border-radius(5px 5px 5px 0)
+  top: auto
+  bottom: 0
+  margin-top: 0
+  margin-bottom: -2px
+
+.dropdown-submenu>a:after
+  display: block
+  content: " "
+  float: right
+  width: 0
+  height: 0
+  border-color: transparent
+  border-style: solid
+  border-width: 5px 0 5px 5px
+  border-left-color: #cccccc
+  margin-top: 5px
+  margin-right: -10px
+
+.dropdown-submenu:hover>a:after
+  border-left-color: #ffffff
+
+.dropdown-submenu.pull-left
+  float: none
+
+.dropdown-submenu.pull-left>.dropdown-menu
+  +border-radius(6px 0 6px 6px)
+  left: -100%
+  margin-left: 10px
+
+
+// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+.description
+  .form-group
+    width: 100%
+    position: relative
+
+    .col-lg-2
+      min-width: 150px
+
+    .error_text
+      +inline-block
+      margin-left: 20px
+      line-height: 34px
+      color: #b94a48
+      display: none
+      position: absolute
+      top: 0px
+      left: 100%
+      min-width: 100px
+
+    .statuses
+      float: left
+      width: 100px
+      margin-top: 5px
+      margin-left: 10px
+      // background: #f8f8f8
+      z-index: 2
+      position: relative
+
+    .preloader
+      width: 16px
+      height: 16px
+      margin: 3px 0px 0px 12px
+      background: url('../img/small_loader.gif')
+
+    .sumbols_left
+      float: left
+      padding-left: 10px
+      line-height: 34px
+      color: $dark_gray_color
+      display: none
+      margin-left: 20px
+
+    .empty_name_error
+      color: red
+      display: none
+      position: absolute
+      top: 0px
+      line-height: 34px
+      height: 34px
+      left: 70%
+      background: #f8f8f8
+
+    .save_status
+      line-height: 21px
+      color: #888
+
+      i
+        margin: 0px 5px 0px 12px
+        color: #13b013
+
+    &.large_field .statuses
+      margin-left: 22px
+
+    .trigger
+      min-height: 34px
+      line-height: 34px
+
+      .placeholder
+        padding-left: 13px
+        min-width: 300px
+
+        &:not(.large)
+          display: block
+          max-height: 34px
+          white-space: nowrap
+          overflow: hidden
+          text-overflow: ellipsis
+          font-size: 14px
+
+      .large
+        +box-sizing(border-box)
+        width: 100%
+        height: 180px
+        padding: 6px 12px
+        font-size: 14px
+        line-height: 1.44
+        overflow-y: hidden
+        display: block
+        // max-height: 200px
+        border: 1px solid transparent
+
+    .triggered
+      z-index: 1
+      position: relative
+      & > input, & > .content_editable, & > select
+        min-width: 300px
+
+      & > select
+        cursor: pointer
+
+      & > .upload_audio
+        margin-left: 22px
+
+      & > a
+        margin-left: 5px
+
+      .content_editable
+        +border-radius(4px)
+        padding: 6px 12px
+        border: 1px solid #cccccc
+        font-size: 14px
+        line-height: 1.44
+        background: #fff
+        min-height: 180px
+
+        &:focus
+          +box-shadow(none)
+          outline: none
+          border-color: #fd6e3b
+
+      .additional_controls
+        +inline-block
+        position: absolute
+        top: 0px
+        right: -17px
+        font-size: 0px
+
+        a
+          +box-shadow(border-box)
+          +inline-block
+          width: 34px
+          height: 34px
+          text-align: center
+          line-height: 34px
+          font-size: 18px
+          background:  #fb8521
+          color: #909090
+          border: 1px solid #d65d00
+          z-index: 1
+          color: #fff
+
+          &:last-child
+            margin-left: -1px
+
+          &:hover
+            background: #eea236
+            z-index: 2
+
+    &.checkbox_added
+      margin-left: 0px
+      .coorect_answer_radio
+        float: left
+        vertical-align: center
+        margin: 10px 0px 10px 20px
+        cursor: pointer
+
+      .correct_answer_indicator
+        display: none
+        font-weight: normal
+
+      .error_text
+        margin-left: 40px
+
+      .triggered > *, .trigger .placeholder
+        min-width: 267px
+
+    &.textfield .triggered
+      display: none
+
+    .processing
+      line-height: 30px
+      margin-left: 13px
+
+    .help
+      width: 15px
+      height: 34px
+      line-height: 34px
+      float: left
+      position: relative
+      left: -10px
+      visibility: hidden
+
+    .dropdown
+      font-size: 14px
+
+      a
+        color: #222
+        position: relative
+        z-index: 89
+        padding: 0px 5px
+
+        &:hover
+          position: relative
+          background: #aaa
+
+    .jp-interface
+      float: left
+      width: 50px
+      padding: 5px 0px 0px 0px
+      height: 50px
+
+    .jp-timeline
+      float: left
+      width: calc(100% - 100px)
+
+    &:not(.last):hover
+      background: #e5e5e5
+
+      .trigger, .triggered
+        cursor: text
+
+      &.audio .trigger
+        cursor: pointer
+
+      .help
+        visibility: visible
+        cursor: pointer
+
+      .placeholder:not(.large)
+        +border-radius(4px)
+        +box-sizing(border-box)
+        display: block
+        padding: 0px 12px
+        min-height: 34px
+        line-height: 32px
+        background: white
+        border: 1px solid darken($border_color, 20%)
+
+      .placeholder.large
+        +border-radius(4px)
+        border: 1px solid darken($border_color, 20%)
+        background: #fff
+
+      // .statuses
+      //   background: #e5e5e5
+
+#new_museum
+  width: 600px
+
+  .modal-body
+    padding: 20px 20px 0px 20px
+
+  .form-group
+    margin-left: 0px
+
+    .statuses
+      display: none
+
+
+
+
+
+
+
+.to_top
+  +opacity(0.5)
+  position: fixed
+  top: 0
+  bottom: 0
+  left: 0
+  width: 25px
+  display: none
+
+  &.has_position
+    z-index: 10001
+  
+  .to_top_panel
+    display: block
+    width: 100%
+    height: 100%
+    color: #010101
+    padding-top: 66px
+    position: relative
+
+    .arrow
+      font-size: 20px
+
+  &:hover
+    +opacity(1)
+
+    .to_top_panel
+      cursor: pointer
+      background: rgba(0,0,0, 0.1)
+
+    .close_panel
+      display: block
+
+  .close_panel
+    position: absolute
+    bottom: 20px
+    left: 0px
+    right: 0px
+    text-align: center
+    line-height: 8px
+    display: none
+  
+  .to_top_button 
+    text-align: left
+    line-height: 42px
+    font-weight: bold
+
+    .arrow
+      display: block
+      width: 100%
+      text-align: center
+      font-size: 18px
+      font-weight: bold
+
+
+
+
+
+.page-wrapper
+  position: relative
+
+.page-preloader
+  position: absolute
+  width: 100%
+  top: 0px
+  left: 0px
+  height: 300px
+  background: white
+  background: url('../img/big_loader.GIF') no-repeat center bottom
+
+
+
+
+
+
+.lightbox_area
+  position: absolute
+  top: 0px
+  left: 0px
+  // height: 100%
+  width: 100%
+  background: rgba(0,0,0, .90)
+  z-index: 998
+  display: none
+  +box-sizing(border-box)
+  // display: block
+  padding: 15px 90px 30px 90px
+  z-index: 999
+
+  .lightbox_preloader
+    display: none
+    height: 454px
+
+    img
+      display: block
+      position: relative
+      left: 50%
+      top: 50%
+      margin-left: -64px
+      margin-top: -64px
+
+  .nav-tabs
+    text-align: center
+    li
+      +inline-block
+      float: none
+      border-bottom: 3px solid transparent
+      a
+        color: #fff
+      &:hover, &.active
+        border-bottom: 3px solid #fb8521
+        a
+          color: #fff
+          background: transparent
+          border-color: transparent
+
+  // .explain_text
+  //   color: #fff
+  //   margin-bottom: 20px
+  //   font-size: 14px
+
+  .apply_resize
+    position: absolute
+    top: 10px
+    right: 25px
+
+  .content
+    height: 360px
+    margin: 30px auto 0px auto
+    width: 1040px
+
+    &.full
+      width: 800px
+
+    .notification
+      float: left
+      width: 300px
+      color: #fff
+      margin: 0px 25px
+      text-align: center
+      padding-top: 90px
+
+    .preview
+      width: 240px
+      float: left
+      min-height: 300px
+      line-height: 34px
+      margin-top: -10px
+      color: #fff
+      text-align: center
+
+      .mobile
+        position: relative
+        width: 255px
+        height: 300px
+        background: url('../img/iphone-preview_short.png') center no-repeat
+        border-bottom: 1px solid white
+
+        .image
+          position: absolute
+          top: 131px
+          left: 39px
+          overflow: hidden
+          width: 177px
+          height: 133px
+          img
+            width: 177px
+            height: 133px
+
+    .cropping_area
+      float: left
+      // width: calc(100% - 240px)
+      overflow: hidden
+      img
+        display: block
+        margin: 0 auto
+        max-height: 350px
+
+      &.full
+        img.cropper_thumb, img.cropper_thumb + div.jcrop-holder
+          display: none
+
+      &.thumb
+        img.cropper_full, img.cropper_full + div.jcrop-holder
+          display: none
+
+      .jcrop-holder
+        margin: 0 auto
+
+  .slider
+    +inline-block
+    width: 100%
+    margin: 0 auto
+    // width: 100%
+    font-size: 0px
+    text-align: center
+    position: relative
+
+    .left, .right
+      margin: 0px 10px
+      color: #fff
+      font-size: 36px
+      font-weight: 100
+      position: absolute
+      top: 50%
+      left: 0px
+      margin-top: -20px
+
+    .right
+      right: 0px
+      left: auto
+
+      &:hover
+        color: $exhibitTextColorHover
+
+    li
+      +inline-block
+      width: 109px
+      height: 84px
+      margin: 8px
+      cursor: pointer
+      position: relative
+
+      img
+        width: 105px
+        height: 80px
+        border: 2px solid transparent
+
+      &.active img
+        border: 2px solid $exhibitTextColorHover
+
+      &:hover .cover
+        visibility: visible
+
+  .timeline
+    height: 100px
+    background: #fff
+
+.cover
+  +border-radius(20px)
+  +transition(max-width 0.2s)
+  +inline-block
+  display: block
+  position: absolute
+  bottom: 10px
+  left: 10px
+  background: #47a447
+  overflow: hidden
+  padding: 0px 5px
+  max-width: 20px
+  height: 20px
+  // transition: all 0.2s
+  // -webkit-transition: all 0.2s
+  visibility: hidden
+  pointer-events: none
+
+  &.pointer_events
+    pointer-events: auto
+
+  span
+    +inline-block
+    max-width: 80px
+    float: left
+    color: #fff
+    line-height: 20px
+    margin-left: -2px
+    text-align: left
+
+  &.active
+    visibility: visible
+    max-width: 92px
+    
+    span
+      max-width: 80px
+
+  &:hover
+    max-width: 92px
+
+.label_timestamp
+  +inline-block
+  position: absolute
+  top: 5px
+  left: 5px
+  background: #fff
+  color: #010101
+  padding: 0px 5px
+  border-radius: 5px
+  padding-right: 15px
+  pointer-events: none
+
+  span
+    font-size: 14px
+    line-height: 12px
+  // word-spacing: 5px
+
+.tab-pane
+  width: 100%
+
+.tab-content > .active, .pill-content > .active
+  display: block
+  // overflow-y: auto
+  // overflow-x: hidden
+
+.ui-state-highlight
+  border: 3px dashed #666
+
+.exhibits_placeholder
+  +box-sizing(border-box)
+  +inline-block()
+  position: relative
+  width: 0px
+  height: 230px
+
+  .helper
+    width: 2px
+    height: 230px
+    content: ''
+    display: block
+    position: absolute
+    top: 0px
+    left: 0px
+    background: #000
+
+li.exhibits_info
+  +inline-block
+  height: auto !important
+  background: #fff
+  width: auto !important
+
+  .info
+    padding: 0px 10px
+    line-height: 30px
+    font-size: 14px
+
+
+
+.timline_container_holder
+  width: 96%
+  margin: 20px auto 0px auto
+  +transition-property(padding)
+  +transition-duration(0.3s)
+  padding: 0px 0px 0px 0px
+  max-height: 60px
+
+  .placeholder
+    height: 20px
+
+.timeline_controls
+  margin-top: 15px
+
+  .edit_images_btn
+    margin-right: 10px
+
+  .timeline_toggler
+    +inline-block
+
+  .drag_images
+    +inline-block
+    margin-left: 40px
+
+    img
+      margin-right: 10px
+
+.timline_container
+  height: 55px
+  +transition-property(all, max-height)
+  +transition-duration(0.3s)
+  opacity: 0
+  overflow: hidden
+  padding: 0px 2px
+  position: relative
+  top: 0px
+
+  .control-label
+    margin-left: -20px
+
+  &.can_drop, &.highlite
+    height: 53px
+    padding: 3px 0px 0px 0px
+    margin-bottom: 2px
+
+  &.highlite
+    border: 2px dashed #666
+
+  &.can_drop
+    border: 2px solid $exhibitTextColorHover
+
+  .points_position_holder
+    position: relative
+    padding-left: 42px
+    margin-top: -30px
+    width: 100%
+    float: right
+    height: 30px
+
+  .image_connection
+    +border-radius(20px)
+    width: 20px
+    height: 20px
+    background: #fff
+    border: 1px solid $exhibitTextColorHover
+    position: absolute
+    top: -17px
+    text-align: center
+    color: #010101
+    cursor: pointer
+
+    &:before
+      top: 18px
+      height: 13px
+      width: 1px
+      left: 8px
+      content: ''
+      display: block
+      position: absolute
+      border: 1px solid $exhibitTextColorHover
+
+    &.hovered
+      color: #fff
+      background: $exhibitTextColorHover
+
+.timline_container_holder.opened 
+  padding: 40px 0px 90px 0px
+  max-height: 300px
+
+  .timline_container
+    +translate(0, 55px)
+    opacity: 1
+    height: 55px
+    padding-top: 3px
+    position: relative
+
+
+// .visibility
+//   .icon-lock
+//     color: #fb8521 !important
+
+//   .icon-globe
+//     color: #1aa1e1 !important
+
+//   .icon-eye-close
+//     color: #d2322d !important
+
+img.do_not_drop
+  pointer-events: none
+
+
+.hint_text
+  color: #aaa
+  font-size: 14px
+
+span.caret.chevron
+  border: none
+  width: 7px
+  position: relative
+
+  &:after
+    position: relative
+    top: -20px
+    font-family: FontAwesome
+    font-weight: normal
+    font-style: normal
+    text-decoration: inherit
+    -webkit-font-smoothing: antialiased
+    content: "\f078"
+
+.groups
+  // margin-top: 10px
+
+  h2
+    +inline-block
+    font-size: 20px
+    margin: 20px 0px 20px 25px
+    cursor: pointer
+
+    i
+      +inline-block
+      font-size: 12px
+      width: 20px
+      height: 15px
+      // margin-top: px
+
+  .exhibits
+    margin: 0px
+    height: auto
+    overflow: hidden
+    padding: 5px 0 0 0
+    +transition-property(all)
+    +transition-duration(0.3s)
+
+    &.true
+      height: 0px
