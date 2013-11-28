@@ -198,7 +198,7 @@ app.get "/template/:folder/:name", web.templates
 # app.get '/logout', manager.logout
 # app.post '/login', passport.authenticate 'local', { successRedirect: '/', failureRedirect: '/login', failureFlash: true}
 
-app.get '/*', web.index
+app.get '/:id', web.index
 
 app.listen app.get("port"), ->
   console.log "Express server listening on port " + app.get("port")

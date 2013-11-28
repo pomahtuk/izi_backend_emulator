@@ -15,13 +15,19 @@ module.exports = (grunt) ->
     watch:
       scripts:
         files: 'public/**/*.coffee'
-        tasks: ['coffee']    
+        tasks: ['coffee']
+        options:
+          livereload: true
       templates:
         files: '**/*.slim'
         tasks: ['slim']
+        options:
+          livereload: true
       styles:
         files: '**/*.sass'
         tasks: ['compass']
+        options:
+          livereload: true
       express:
         files:  [ 'app.coffee', 'routes/*.coffee', 'models/*.coffee' ],
         tasks:  [ 'nodemon' ]
@@ -56,7 +62,6 @@ module.exports = (grunt) ->
         tasks: ['nodemon', 'watch']
         options:
           logConcurrentOutput: true
-
 
   # These plugins provide necessary tasks.
   grunt.loadNpmTasks 'grunt-contrib-coffee'
