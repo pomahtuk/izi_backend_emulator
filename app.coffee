@@ -98,7 +98,7 @@ app.use(coffeescript(
 ))
 app.use express.bodyParser(
   keepExtensions: true
-  uploadDir: __dirname + "/public"
+  uploadDir: __dirname + "/public/uploads"
   limit: "5mb"
 )
 app.use express.methodOverride()
