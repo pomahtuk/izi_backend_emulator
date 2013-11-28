@@ -28,11 +28,11 @@ module.exports = (grunt) ->
         tasks: ['compass']
         options:
           livereload: true
-      express:
-        files:  [ 'app.coffee', 'routes/*.coffee', 'models/*.coffee' ],
-        tasks:  [ 'nodemon' ]
-        options:
-          spawn: false  # Without this option specified express won't be reloaded
+      # express:
+      #   files:  [ 'app.coffee', 'routes/*.coffee', 'models/*.coffee' ],
+      #   tasks:  [ 'nodemon' ]
+      #   options:
+      #     spawn: false  # Without this option specified express won't be reloaded
 
     slim:
       dist:
