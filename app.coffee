@@ -190,6 +190,7 @@ app.get    "/api/provider/:cp_id/museums/:m_id/exhibits/:field/:direction", api.
 
 app.get "/partials/:name", web.partials
 app.get "/template/:folder/:name", web.templates
+app.get "/locales/:locale/:file", web.locales
 
 #
 # Auth routes

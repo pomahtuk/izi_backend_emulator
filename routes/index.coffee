@@ -17,3 +17,11 @@ exports.templates = (req, res) ->
   folder = req.params.folder
   template = fs.readFileSync "#{__dirname}/../views/template/#{folder}/#{name}", "utf-8"
   res.send template
+
+exports.locales = (req, res) ->
+  console.log req.params
+  locale  = req.params.locale
+  file    = req.params.file
+  # folder = req.params.folder
+  translation = fs.readFileSync "#{__dirname}/../locales/#{locale}/#{file}", "utf-8"
+  res.send translation

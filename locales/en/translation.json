@@ -1,0 +1,27 @@
+{
+  "header": {
+    "newMuseum": "New Museum",
+    "newTour": "New Tour"
+  },
+  "Edit": "Edit",
+  "Profile": "Profile",
+  "Logout": "Logout",
+  "newLanguage": "New language",
+  "Changes autosaved at": "Changes autosaved at",
+  "Museum properties": "Museum properties ",
+  "Actions": "Actions",
+  "New item": "New item",
+  "addSelectedCollection": "Add selected items to collection...",
+  "setItemVisibility": "Set visibility for selected items...",
+
+  "ru": "Russian",
+  "en": "English",
+  "es": "Spanish",
+  "ge": "German",
+  "fi": "Finnish",
+  "sw": "Sweedish",
+  "it": "Italian",
+  "fr": "French",
+  "kg": "Klingon"
+
+}
