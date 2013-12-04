@@ -189,8 +189,8 @@
     };
   }).service("backendWrapper", function($http, ngProgress, $location, $i18next) {
     return {
-      museum_id: "5285b3417de600691f000002",
-      content_provider_id: "5285b3417de600691f000001",
+      museum_id: "529ee18e13b106fb0f000002",
+      content_provider_id: "529ee18e13b106fb0f000001",
       backend_url: "http://192.168.158.128:3000/api",
       museums: [],
       exhibits: [],
@@ -323,10 +323,8 @@
               new_exhibits.push(exhibit);
             }
           }
-          ngProgress.complete();
           console.log('anim completed');
           new_exhibits = this.sortArray(new_exhibits);
-          this.hier_exhibits = this.form_hierarchial_object(new_exhibits);
           this.active_exhibit = new_exhibits[0];
           this.exhibits = new_exhibits;
           this.ajax_progress = false;
@@ -395,7 +393,6 @@
           }
         }).bind(this));
         return request.error(function() {
-          ngProgress.complete();
           if (q != null) {
             return q.reject();
           }
@@ -483,7 +480,6 @@
           return this.reload_exhibits(null, null, q);
         }).bind(this));
         return request.error(function() {
-          ngProgress.complete();
           if (q != null) {
             return q.reject();
           }
@@ -493,7 +489,3 @@
   });
 
 }).call(this);
-
-/*
-//@ sourceMappingURL=services.js.map
-*/

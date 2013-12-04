@@ -5,6 +5,13 @@ express       = require "express"
 coffee        = require 'coffee-script'
 coffeescript  = require 'connect-coffee-script'
 api           = require "./routes/routes"
+quiz          = require "./routes/quiz"
+quiz_answer   = require "./routes/quiz_answer"
+story         = require "./routes/story"
+exhibit       = require "./routes/exhibit"
+media         = require "./routes/media"
+processing    = require "./routes/processing"
+mapping       = require "./routes/mapping"
 web           = require "./routes/index"
 models        = require "./models/db"
 path          = require "path"
@@ -131,47 +138,47 @@ app.get "/", web.index
 ###### ensureAuthenticated
 
 #images
-app.post   "/api/upload/:parent_id", api.upload_handler
-app.put    "/api/upload/:parent_id", api.upload_handler
+app.post   "/api/upload/:parent_id", processing.upload_handler
+app.put    "/api/upload/:parent_id", processing.upload_handler
 
-app.get    "/api/imagedata", api.imagedata
+app.get    "/api/imagedata", processing.imagedata
 
-app.post   "/api/resize_thumb/:image_id", api.resize_handler
-app.put    "/api/resize_thumb/:image_id", api.resize_handler
+app.post   "/api/resize_thumb/:image_id", processing.resize_handler
+app.put    "/api/resize_thumb/:image_id", processing.resize_handler
 
-app.get    "/api/quiz/:q_id", api.certan_quiz
-app.post   "/api/quiz", api.create_quiz
-app.put    "/api/quiz/:q_id", api.update_quiz
-app.delete "/api/quiz/:q_id", api.delete_quiz
+app.get    "/api/quiz/:q_id", quiz.certan_quiz
+app.post   "/api/quiz", quiz.create_quiz
+app.put    "/api/quiz/:q_id", quiz.update_quiz
+app.delete "/api/quiz/:q_id", quiz.delete_quiz
 
-app.get    "/api/quiz_answer/:qa_id", api.certan_quiz_answer
-app.post   "/api/quiz_answer", api.create_quiz_answer
-app.put    "/api/quiz_answer/:qa_id", api.update_quiz_answer
-app.delete "/api/quiz_answer/:qa_id", api.delete_quiz_answer
+app.get    "/api/quiz_answer/:qa_id", quiz_answer.certan_quiz_answer
+app.post   "/api/quiz_answer", quiz_answer.create_quiz_answer
+app.put    "/api/quiz_answer/:qa_id", quiz_answer.update_quiz_answer
+app.delete "/api/quiz_answer/:qa_id", quiz_answer.delete_quiz_answer
 
-app.get    "/api/story", api.story_list
-app.get    "/api/story/:s_id", api.certan_story
-app.post   "/api/story", api.create_story
-app.put    "/api/story/:s_id", api.update_story
-app.delete "/api/story/:s_id", api.delete_story
+app.get    "/api/story", story.story_list
+app.get    "/api/story/:s_id", story.certan_story
+app.post   "/api/story", story.create_story
+app.put    "/api/story/:s_id", story.update_story
+app.delete "/api/story/:s_id", story.delete_story
 
-app.get    "/api/media", api.media_list
-app.get    "/api/media/:m_id", api.certan_media
-app.post   "/api/media", api.create_media
-app.put    "/api/media/:m_id", api.update_media
-app.delete "/api/media/:m_id", api.delete_media
-app.post   "/api/media_for/:parent_id/reorder", api.media_reorder
+app.get    "/api/media", media.media_list
+app.get    "/api/media/:m_id", media.certan_media
+app.post   "/api/media", media.create_media
+app.put    "/api/media/:m_id", media.update_media
+app.delete "/api/media/:m_id", media.delete_media
+app.post   "/api/media_for/:parent_id/reorder", media.media_reorder
 
-app.post   "/api/media_mapping", api.create_mapping
-app.put    "/api/media_mapping/:map_id", api.update_mapping
-app.delete "/api/media_mapping/:map_id", api.delete_mapping
+app.post   "/api/media_mapping", mapping.create_mapping
+app.put    "/api/media_mapping/:map_id", mapping.update_mapping
+app.delete "/api/media_mapping/:map_id", mapping.delete_mapping
 
-app.get    "/api/story_set/:e_id", api.certan_story_set
-app.post   "/api/story_set", api.create_story_set
-app.put    "/api/story_set/:e_id", api.update_story_set
-app.get    "/api/delete/story_set/:e_id", api.delete_story_set
-app.delete "/api/story_set/:e_id", api.delete_story_set
-app.post   "/api/story_set/update_numbers/:parent_id", api.update_story_set_numbers
+app.get    "/api/story_set/:e_id", exhibit.certan_story_set
+app.post   "/api/story_set", exhibit.create_story_set
+app.put    "/api/story_set/:e_id", exhibit.update_story_set
+app.get    "/api/delete/story_set/:e_id", exhibit.delete_story_set
+app.delete "/api/story_set/:e_id", exhibit.delete_story_set
+app.post   "/api/story_set/update_numbers/:parent_id", exhibit.update_story_set_numbers
 
 app.get    "/api/qr_code/:data", api.qr_code
 
@@ -199,7 +206,7 @@ app.get "/locales/:locale/:file", web.locales
 # app.get '/logout', manager.logout
 # app.post '/login', passport.authenticate 'local', { successRedirect: '/', failureRedirect: '/login', failureFlash: true}
 
-app.get '/:id', web.index
+app.get '/*', web.index
 
 app.listen app.get("port"), ->
   console.log "Express server listening on port " + app.get("port")

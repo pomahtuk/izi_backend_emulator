@@ -4,17 +4,22 @@ module.exports = (grunt) ->
   grunt.initConfig
     coffee:
       options:
-        sourceMap: true
+        sourceMap: false
       app:
         expand: true
-        cwd: 'public/'
-        src: ['**/*.coffee']
-        dest: 'public/'
+        cwd: 'public/js/coffee/'
+        src: ['*.coffee']
+        dest: 'public/js/'
         ext: '.js'
+      directives:
+        options:
+          join: true
+        files:
+          'public/js/directives_new.js': ['public/js/coffee/directives/*.coffee']
 
     watch:
       scripts:
-        files: 'public/**/*.coffee'
+        files: ['public/js/coffee/**/*.coffee']
         tasks: ['coffee']
         options:
           livereload: true
@@ -28,11 +33,6 @@ module.exports = (grunt) ->
         tasks: ['compass']
         options:
           livereload: true
-      # express:
-      #   files:  [ 'app.coffee', 'routes/*.coffee', 'models/*.coffee' ],
-      #   tasks:  [ 'nodemon' ]
-      #   options:
-      #     spawn: false  # Without this option specified express won't be reloaded
 
     slim:
       dist:
@@ -51,6 +51,7 @@ module.exports = (grunt) ->
     nodemon:
       dev:
         options:
+          ignoredFiles: ['public/**', 'views/**', 'partials/**', 'locales/**', 'Gruntfile.coffee'],
           file: "app.coffee"
 
     concurrent:
@@ -76,3 +77,5 @@ module.exports = (grunt) ->
     'concurrent:first',
     'concurrent:second'
   ]
+
+  grunt.registerTask 'build', ['coffee', 'compass', 'slim']

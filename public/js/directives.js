@@ -904,7 +904,9 @@
         }).prop("disabled", !$.support.fileInput).parent().addClass(($.support.fileInput ? undefined : "disabled"));
         return scope.$watch('url', function(newValue, oldValue) {
           if (newValue) {
-            return element.fileupload("option", "url", newValue);
+            if (element.data('file_upload')) {
+              return element.fileupload("option", "url", newValue);
+            }
           }
         });
       }
@@ -1719,19 +1721,6 @@
         return true;
       }
     };
-  }).directive('sortableNested', function($http, errorProcessing, backendWrapper, $i18next) {
-    return {
-      restrict: 'A',
-      link: function(scope, element, attrs) {
-        element = $(element);
-        return element.nestedSortable({
-          handle: 'div.opener',
-          items: 'li.exhibit',
-          listType: 'ul',
-          toleranceElement: '> div.opener'
-        });
-      }
-    };
   }).directive('exhibitsSortable', function($http, errorProcessing, backendWrapper, $i18next) {
     return {
       restrict: 'A',
@@ -2100,7 +2089,3 @@
   });
 
 }).call(this);
-
-/*
-//@ sourceMappingURL=directives.js.map
-*/

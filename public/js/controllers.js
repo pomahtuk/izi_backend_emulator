@@ -82,7 +82,23 @@
     '$rootScope', '$scope', '$http', '$filter', '$window', '$modal', '$routeParams', '$location', 'ngProgress', 'storySetValidation', 'errorProcessing', '$i18next', 'imageMappingHelpers', 'backendWrapper', function($rootScope, $scope, $http, $filter, $window, $modal, $routeParams, $location, ngProgress, storySetValidation, errorProcessing, $i18next, imageMappingHelpers, backendWrapper) {
       var dropDown, findActive, get_lang, get_name, get_number, get_state, tmp;
       window.sc = $scope;
+      $scope.museum_type_filter = '';
       $scope.exhibit_search = '';
+      $scope.sort_field = 'number';
+      $scope.sort_direction = 1;
+      $scope.sort_text = 'icon-sort-by-order';
+      $scope.exhibits_visibility_filter = 'all';
+      $scope.ajax_progress = true;
+      $scope.story_subtab = 'video';
+      $scope.story_tab = 'main';
+      $scope.museum_tab = 'main';
+      $scope.museum_subtab = 'video';
+      $scope.grouped_positions = {
+        draft: false,
+        passcode: false,
+        invisible: false,
+        published: false
+      };
       $scope.changeLng = function(lng) {
         return $i18next.options.lng = lng;
       };
@@ -123,22 +139,8 @@
           return true;
         };
       };
-      $scope.sort_field = 'number';
-      $scope.sort_direction = 1;
-      $scope.sort_text = 'icon-sort-by-order';
-      $scope.exhibits_visibility_filter = 'all';
-      $scope.ajax_progress = true;
-      $scope.story_subtab = 'video';
-      $scope.story_tab = 'main';
-      $scope.museum_tab = 'main';
-      $scope.museum_subtab = 'video';
-      $scope.grouped_positions = {
-        draft: false,
-        passcode: false,
-        invisible: false,
-        published: false
-      };
       angular.extend($scope, backendWrapper);
+      ngProgress.complete();
       $scope.user = {
         mail: 'pman89@yandex.ru',
         providers: [
@@ -169,6 +171,8 @@
       $scope.element_switch = true;
       $scope.forbid_switch = false;
       $scope.create_new_language = false;
+      $scope.new_item_creation = false;
+      $scope.all_selected = false;
       dropDown = $('#drop_down').removeClass('hidden').hide();
       findActive = function() {
         return $('ul.exhibits li.exhibit.active');
@@ -313,7 +317,6 @@
           return delete_story.removeClass('no_margin');
         }
       };
-      $scope.museum_type_filter = '';
       $scope.grid = function() {
         return $('ul.exhibits').each(function() {
           var collection, tileListMargin, tileSpace, tileWidth;
@@ -353,8 +356,6 @@
           return nav_museum.slideUp(100);
         }
       });
-      $scope.new_item_creation = false;
-      $scope.all_selected = false;
       $scope.modal_options = {
         current_language: {
           name: $scope.translations[$scope.current_museum.language],
@@ -1106,6 +1107,45 @@
           return $scope.grid();
         }
       }, true);
+      $scope.$watch('exhibits_visibility_filter', function(newValue, oldValue) {
+        if (newValue != null) {
+          if (newValue !== oldValue) {
+            if (newValue !== '') {
+              $scope.group_exhibits_processor(true);
+            }
+            return $scope.closeDropDown();
+          }
+        }
+      });
+      $scope.$watch('grouped_positions', function(newValue, oldValue) {
+        if (newValue != null) {
+          return localStorage.setItem('grouped_positions', JSON.stringify($scope.grouped_positions));
+        }
+      }, true);
+      $scope.$watch('grouped_exhibits', function(newValue, oldValue) {
+        if (newValue != null) {
+          return localStorage.setItem('grouped', 'true');
+        } else {
+          return localStorage.setItem('grouped', 'false');
+        }
+      });
+      $scope.$watch('exhibit_search', function(newValue, oldValue) {
+        if (newValue != null) {
+          if (newValue !== oldValue) {
+            return $scope.closeDropDown();
+          }
+        }
+      });
+      $scope.$watch('current_museum.invalid', function(newValue, oldValue) {
+        if ((newValue != null) && newValue) {
+          setTimeout(function() {
+            if (!$scope.museum_edit_dropdown_opened) {
+              return $('.museum_edit_opener').click();
+            }
+          }, 10);
+        }
+        return true;
+      });
       $scope.$on('save_new_exhibit', function() {
         console.log('saving!');
         $scope.new_exhibit.stories[$scope.current_museum.language].status = 'passcode';
@@ -1156,46 +1196,6 @@
           });
         }
         return $scope.forbid_switch = false;
-      });
-      $scope.$watch('exhibits_visibility_filter', function(newValue, oldValue) {
-        if (newValue != null) {
-          if (newValue !== oldValue) {
-            if (newValue !== '') {
-              $scope.group_exhibits_processor(true);
-            }
-            return $scope.closeDropDown();
-          }
-        }
-      });
-      $scope.$watch('grouped_positions', function(newValue, oldValue) {
-        if (newValue != null) {
-          return localStorage.setItem('grouped_positions', JSON.stringify($scope.grouped_positions));
-        }
-      }, true);
-      $scope.$watch('grouped_exhibits', function(newValue, oldValue) {
-        if (newValue != null) {
-          return localStorage.setItem('grouped', 'true');
-        } else {
-          return localStorage.setItem('grouped', 'false');
-        }
-      });
-      $scope.$watch('exhibit_search', function(newValue, oldValue) {
-        if (newValue != null) {
-          if (newValue !== oldValue) {
-            return $scope.closeDropDown();
-          }
-        }
-      });
-      $scope.$watch('current_museum.invalid', function(newValue, oldValue) {
-        console.log(newValue != null, newValue);
-        if ((newValue != null) && newValue) {
-          setTimeout(function() {
-            if (!$scope.museum_edit_dropdown_opened) {
-              return $('.museum_edit_opener').click();
-            }
-          }, 10);
-        }
-        return true;
       });
       tmp = localStorage.getItem("grouped_positions");
       if (tmp) {
@@ -1370,7 +1370,3 @@
   };
 
 }).call(this);
-
-/*
-//@ sourceMappingURL=controllers.js.map
-*/

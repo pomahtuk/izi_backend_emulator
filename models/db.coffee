@@ -1,5 +1,5 @@
 mongoose = require 'mongoose'
-mongoose.set('debug', true)
+# mongoose.set('debug', true)
 
 story_setSchema = new mongoose.Schema
   content_provider: { type : mongoose.Schema.ObjectId, ref : 'content_provider' }
