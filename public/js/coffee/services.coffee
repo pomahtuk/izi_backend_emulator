@@ -158,12 +158,12 @@ angular.module("Museum.services", []).service "sharedProperties", ($rootScope) -
   ##
   ## Two sections - for prototype and deelopment
   ##
-  # museum_id: "529ee18e13b106fb0f000002"
-  # content_provider_id: "529ee18e13b106fb0f000001"
-  # backend_url: "http://192.168.158.128:3000/api"
-  museum_id: "528f05b3c99772031a000002" #prototype
-  content_provider_id: "528f05b3c99772031a000001" #prototype
-  backend_url: "http://prototype.izi.travel/api" #prototype
+  museum_id: "529ee18e13b106fb0f000002"
+  content_provider_id: "529ee18e13b106fb0f000001"
+  backend_url: "http://192.168.158.128:3000/api"
+  # museum_id: "528f05b3c99772031a000002" #prototype
+  # content_provider_id: "528f05b3c99772031a000001" #prototype
+  # backend_url: "http://prototype.izi.travel/api" #prototype
   museums: []
   exhibits: []
   modal_translations: []

@@ -12,10 +12,10 @@ https       = require 'https'
 async       = require 'async'
 
 
-# backend_url  = "http://192.168.158.128:3000"
-backend_url  = "http://prototype.izi.travel"
-# backend_path = "./"
-backend_path = "/home/ubuntu/izi_backend_emulator/"
+backend_url  = "http://192.168.158.128:3000"
+# backend_url  = "http://prototype.izi.travel"
+backend_path = "./"
+# backend_path = "/home/ubuntu/izi_backend_emulator/"
 
 # images manipulation
 
