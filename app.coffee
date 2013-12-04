@@ -21,8 +21,6 @@ assets        = require 'connect-assets'
 connectDomain = require 'connect-domain'
 mongoose      = require 'mongoose'
 MongoStore    = require('connect-mongo')(express)
-upload        = require 'jquery-file-upload-middleware'
-formidable    = require 'formidable'
 util          = require 'util'
 
 
@@ -32,14 +30,6 @@ util          = require 'util'
 flash         = require('connect-flash')
 passport      = require('passport')
 LocalStrategy = require('passport-local').Strategy
-
-upload.configure
-  uploadDir: __dirname + "/public/uploads"
-  uploadUrl: "/uploads"
-  imageVersions:
-    thumbnail:
-      width: 150
-      height: 200
 
 passport.serializeUser (user, done) ->
   done null, user.id
